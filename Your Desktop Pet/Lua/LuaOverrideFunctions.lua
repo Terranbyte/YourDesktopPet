@@ -1,0 +1,1 @@
+﻿print = function(s) _Print("Lua", s) end
