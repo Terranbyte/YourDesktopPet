@@ -1,3 +1,0 @@
-﻿pet = {}
-desktopBounds = {}
-windows = {}
