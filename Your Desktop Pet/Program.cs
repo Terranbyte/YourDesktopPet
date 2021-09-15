@@ -71,8 +71,7 @@ namespace Your_Desktop_Pet
                 if (currentTime < updateInterval)
                     continue;
 
-                Keyboard.IsKeyToggled(Key.Enter);
-                Keyboard.PrimaryDevice.IsKeyToggled(Key.Enter);
+                Console.WriteLine(Core.Helpers.Time.DeltaTime);
 
                 animationTime += 1;
 

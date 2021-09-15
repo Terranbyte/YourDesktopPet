@@ -63,7 +63,7 @@ namespace Your_Desktop_Pet.Core.Pet
             lua.RegisterFunction("_MouseButtonUp", typeof(API.Input.InputProvider).GetMethod("MouseButtonUp", BindingFlags.Static | BindingFlags.Public));
             lua.RegisterFunction("_IsKeyDown", typeof(API.Input.InputProvider).GetMethod("IsKeyDown", BindingFlags.Static | BindingFlags.Public));
             lua.RegisterFunction("_IsKeyHeld", typeof(API.Input.InputProvider).GetMethod("IsKeyHeld", BindingFlags.Static | BindingFlags.Public));
-            lua.RegisterFunction("_IsKeyUp", typeof(API.Input.InputProvider).GetMethod("IsKeyUp", BindingFlags.Static | BindingFlags.Public));
+            //lua.RegisterFunction("_IsKeyUp", typeof(API.Input.InputProvider).GetMethod("IsKeyUp", BindingFlags.Static | BindingFlags.Public));
         }
 
         private void PopulateVariables()

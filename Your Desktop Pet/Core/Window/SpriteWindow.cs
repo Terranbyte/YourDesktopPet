@@ -34,14 +34,19 @@ namespace Your_Desktop_Pet.Core.Window
             BackgroundImageLayout = ImageLayout.Zoom;
             BackgroundImage = image;
 
+            KeyPreview = false;
+
             Size = new Size((int)(image.Width * Globals.ScaleFactor), (int)(image.Height * Globals.ScaleFactor));
 
             if (keyboardHandler)
             {
+                KeyPreview = true;
                 Input = new System.Windows.Controls.Button();
                 Input.Focusable = true;
                 Keyboard.Focus(Input);
-            }    
+            }
+
+            Activate();
         }
         protected override CreateParams CreateParams
         {

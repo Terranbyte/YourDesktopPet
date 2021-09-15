@@ -21,3 +21,26 @@ C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Release\Lua\te
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Release\Lua\lang.lua
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Release\Your_Desktop_Pet.Core.Window.SpriteWindow.resources
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Release\settings.ini
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\lua54.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\liblua54.dylib
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\x86\lua54.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\x64\lua54.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\x64\liblua54.so
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Lua\PetVariables.lua
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Lua\LuaOverrideFunctions.lua
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Lua\PetAPIFunctions.lua
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\settings.ini
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Your Desktop Pet.exe.config
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Your Desktop Pet.exe
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\Your Desktop Pet.pdb
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\KeraLua.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\NLua.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Release\KeraLua.xml
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.AssemblyReference.cache
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your_Desktop_Pet.Core.Window.SpriteWindow.resources
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your_Desktop_Pet.Forms.Launcher.resources
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.GenerateResource.cache
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.CoreCompileInputs.cache
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.CopyComplete
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.exe
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.pdb

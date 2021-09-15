@@ -14,8 +14,8 @@ end
 
 function _Update()
     -- take input
-    jump = _IsKeyHeld("Space")
-
+    jump = _IsKeyDown("Space")
+    
     if _IsKeyHeld("D") then
         pet.animation = "run_6"
         pet.flipX = false
@@ -27,10 +27,10 @@ function _Update()
     else
         pet.animation = "idle_4"
     end
-
+    
     if jump or not grounded then
         pet.animation = "jump_1"
-
+        
         if yVelocity > 3.5 then
             pet.animation = "fall_1"
         end
@@ -38,6 +38,7 @@ function _Update()
 end
 
 function _LateUpdate()
+    --print(pet.y)
     windows = _GetWindows(false, true)
 
     yVelocity = yVelocity + baseGravity
