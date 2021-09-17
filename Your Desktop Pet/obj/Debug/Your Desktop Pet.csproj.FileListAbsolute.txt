@@ -49,3 +49,4 @@ C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Des
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.CoreCompileInputs.cache
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.exe
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.pdb
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.SuggestedBindingRedirects.cache

@@ -9,7 +9,7 @@ grounded = false
 function _Start()
     pet.animation = "idle_4"
     pet.x = 720
-    pet.y = 0
+    pet.y = 1080
 end
 
 function _Update()
@@ -51,10 +51,9 @@ function _LateUpdate()
     -- check window collisions
     for i = 0, tablelength(windows) - 1, 1 do
         -- adjusted pet bounds
-        ab = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20)
+        --ab = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20)
         -- projected pet bounds
-        pb = BoundsFromXYWH(ab.X, ab.Y, ab.Width, ab.Height)
-        pb.Height = ab.Height + yVelocity
+        pb = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20 + yVelocity)
 
         wb = windows[i].bounds
         wb = BoundsFromXYWH(wb.X, wb.Y, wb.Width, 20)
@@ -66,7 +65,8 @@ function _LateUpdate()
         -- end
 
         -- check projected and current bounds against the window bounds
-        if (isColliding(pb, wb) or isColliding(ab, wb)) and yVelocity >= 0 then
+        if isColliding(pb, wb) and yVelocity >= 0 then
+            print(pb.X .. " " .. pb.Width)
             pet.y = wb.Y
             yVelocity = 0
             grounded = true

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 // Mouse input: https://stackoverflow.com/questions/1316681/getting-mouse-position-in-c-sharp
@@ -243,7 +238,6 @@ namespace Your_Desktop_Pet.Core.API.Input
     class InputProvider
     {
         private static VirtualKeyStates _lastKey = VirtualKeyStates.VK_NONE;
-        private static int _lastState = 0;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
@@ -260,7 +254,6 @@ namespace Your_Desktop_Pet.Core.API.Input
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
-        // FOR CONSOLE APPLICATIONS USE:
         [DllImport("user32.dll")]
         public static extern int GetAsyncKeyState(int vKeys);
 

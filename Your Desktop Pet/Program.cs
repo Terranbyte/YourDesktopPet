@@ -25,6 +25,7 @@ namespace Your_Desktop_Pet
         [STAThread]
         static void Main(string[] args)
         {
+            #region Setup
             IntPtr hWnd = GetConsoleWindow();
             ShowWindow(hWnd, SW_HIDE);
             Application.EnableVisualStyles();
@@ -54,6 +55,7 @@ namespace Your_Desktop_Pet
                 if (hWnd != IntPtr.Zero)
                     ShowWindow(hWnd, SW_SHOW);
             }
+            #endregion
 
             Core.Pet.PetObject pet = new Core.Pet.PetObject(BaseDirectory);
             pet.Start();
@@ -63,15 +65,19 @@ namespace Your_Desktop_Pet
             float updateInterval = 1.0f / Core.Globals.FrameCap;
             float animationInterval = Core.Globals.FrameCap / Core.Globals.AnimationFrameRate;
 
+            int frames = 0;
+            float totalTime = 0;
+
             while (!pet.ShouldExit)
             {
                 Core.Helpers.Time.Update();
                 currentTime += Core.Helpers.Time.DeltaTime;
+                totalTime += Core.Helpers.Time.DeltaTime;
 
                 if (currentTime < updateInterval)
                     continue;
 
-                Console.WriteLine(Core.Helpers.Time.DeltaTime);
+                Console.Title = $"FPS: {1/currentTime}";
 
                 animationTime += 1;
 

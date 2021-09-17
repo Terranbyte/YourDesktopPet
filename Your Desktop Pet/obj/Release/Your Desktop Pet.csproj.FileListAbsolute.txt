@@ -41,6 +41,6 @@ C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your_D
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your_Desktop_Pet.Forms.Launcher.resources
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.GenerateResource.cache
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.CoreCompileInputs.cache
-C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.CopyComplete
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.exe
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.pdb
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Release\Your Desktop Pet.csproj.SuggestedBindingRedirects.cache

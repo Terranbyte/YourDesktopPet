@@ -58,9 +58,6 @@ namespace Your_Desktop_Pet.Core.Drawing
             Window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => ShouldExit = true);
             Offset = offset;
             this.Animator = new Animator(ref Window, spriteDirectory);
-            this.Animator.ChangeAnimation("idle_4");
-            //this.Animator.Tick();
-            //this.Animator.FlipSprite(true);
 
             _spriteThread = new Thread(new ThreadStart(() =>
             {

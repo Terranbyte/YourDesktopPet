@@ -58,12 +58,11 @@ namespace Your_Desktop_Pet.Core.Pet
         {
             LuaTable petObject = _luaHandler.lua.GetTable("pet");
             petObject["bounds"] = _sprite.Window.Bounds;
-            _luaHandler.lua.SetObjectToPath("pet", petObject);
 
             _luaHandler.lua.GetFunction("_Update").Call();
             _luaHandler.lua.GetFunction("_LateUpdate").Call();
 
-            petObject = _luaHandler.lua.GetTable("pet");
+            //Apply changes
 
             if ((bool)petObject["show"] == true)
                 _sprite.Show();
@@ -73,9 +72,7 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.ShouldHalt)
                 return;
 
-            // Get and apply changes from Lua
-
-            _sprite.Animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
+           _sprite.Animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
 
             _sprite.SetPosition(Convert.ToSingle(petObject["x"]), Convert.ToSingle(petObject["y"]));
         }

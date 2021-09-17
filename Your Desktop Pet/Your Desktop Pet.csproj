@@ -109,9 +109,6 @@
       <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Lua\lang.lua" />
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\KeraLua.1.2.14\build\net46\KeraLua.targets" Condition="Exists('..\packages\KeraLua.1.2.14\build\net46\KeraLua.targets')" />

@@ -62,6 +62,7 @@ namespace Your_Desktop_Pet.Core.Drawing
         public void ChangeAnimation(string animation)
         {
             Image source;
+
             try
             {
                 source = Image.FromFile(_spriteDirectory + "\\" + animation + ".png");
