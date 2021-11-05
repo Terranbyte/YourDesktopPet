@@ -317,11 +317,10 @@ namespace Your_Desktop_Pet.Core.API.Input
             if (Enum.TryParse("VK_" + key.ToUpper(), out enumKey))
                 return enumKey;
 
-
-            if (key == "Space")
+            if (key.ToUpper() == "SPACE")
                 return VirtualKeyStates.VK_SPACE;
 
-            throw new ArgumentException($"Tried to get input from the key \"{key}\". Input is only allowed from alphanumeric and whitespace characters.");
+            throw new ArgumentException($"Tried to get input from an invalid key \"{key}\"");
         }
     }
 }

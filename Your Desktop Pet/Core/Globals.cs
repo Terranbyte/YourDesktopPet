@@ -8,12 +8,12 @@ namespace Your_Desktop_Pet.Core
 {
     static class Globals
     {
-        public static bool DebugMode = true;
-        public static bool LuaTraceback = false;
+        public static bool debugMode = true;
+        public static bool luaTraceback = false;
 
-        public static float FrameCap = 60f;
-        public static float AnimationFrameRate = 12f;
-        public static float ScaleFactor = 1f;
-        public static Drawing.PositionOffset Offset = Drawing.PositionOffset.TopLeft;
+        public static float frameCap = 60f;
+        public static float animationFrameRate = 12f;
+        public static float scaleFactor = 1f;
+        public static Drawing.PositionOffset offset = Drawing.PositionOffset.TopLeft;
     }
 }

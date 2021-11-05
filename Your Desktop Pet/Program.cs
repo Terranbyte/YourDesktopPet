@@ -11,7 +11,7 @@ namespace Your_Desktop_Pet
 {
     class Program
     {
-        public static string BaseDirectory = string.Empty;
+        public static string baseDirectory = string.Empty;
 
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
@@ -37,41 +37,41 @@ namespace Your_Desktop_Pet
 
                 if (result == DialogResult.OK)
                 {
-                    BaseDirectory = Directory.GetParent(dialog.FileName).FullName;
+                    baseDirectory = Directory.GetParent(dialog.FileName).FullName;
                 }
             }
 
-            if (string.IsNullOrEmpty(BaseDirectory))
+            if (string.IsNullOrEmpty(baseDirectory))
                 return;
 
-            FetchAndApplySettings(BaseDirectory);
+            FetchAndApplySettings(baseDirectory);
 
             Core.Helpers.Log.Create();
             Core.Helpers.Log.WriteLine("Main", "Debug start");
 
-            if (Core.Globals.DebugMode)
+            if (Core.Globals.debugMode)
             {
                 if (hWnd != IntPtr.Zero)
                     ShowWindow(hWnd, SW_SHOW);
             }
             #endregion
 
-            Core.Pet.PetObject pet = new Core.Pet.PetObject(BaseDirectory);
+            Core.Pet.PetObject pet = new Core.Pet.PetObject(baseDirectory);
             pet.Start();
 
             Core.Helpers.Time.Start();
 
             float currentTime = 0;
             float animationTime = 0;
-            float updateInterval = 1.0f / Core.Globals.FrameCap;
-            float animationInterval = Core.Globals.FrameCap / Core.Globals.AnimationFrameRate;
+            float updateInterval = 1.0f / Core.Globals.frameCap;
+            float animationInterval = Core.Globals.frameCap / Core.Globals.animationFrameRate;
             float totalTime = 0;
 
-            while (!pet.ShouldExit)
+            while (!pet.shouldExit)
             {
                 Core.Helpers.Time.Update();
-                currentTime += Core.Helpers.Time.DeltaTime;
-                totalTime += Core.Helpers.Time.DeltaTime;
+                currentTime += Core.Helpers.Time.deltaTime;
+                totalTime += Core.Helpers.Time.deltaTime;
 
                 if (currentTime < updateInterval)
                     continue;
@@ -121,14 +121,14 @@ namespace Your_Desktop_Pet
             Ini.IniFile petFile = new Ini.IniFile(petDirectory + "\\pet.ini");
 
             // App settings
-            Core.Globals.DebugMode = Convert.ToBoolean(settingsFile.IniReadValue("AppSettings", "DebugMode"));
-            Core.Globals.LuaTraceback = Convert.ToBoolean(settingsFile.IniReadValue("AppSettings", "LuaTraceback"));
+            Core.Globals.debugMode = Convert.ToBoolean(settingsFile.IniReadValue("AppSettings", "DebugMode"));
+            Core.Globals.luaTraceback = Convert.ToBoolean(settingsFile.IniReadValue("AppSettings", "LuaTraceback"));
 
             // Pet settings
-            Core.Globals.FrameCap = Convert.ToSingle(petFile.IniReadValue("PetSettings", "UpdateCallInterval"));
-            Core.Globals.AnimationFrameRate = Convert.ToSingle(petFile.IniReadValue("PetSettings", "AnimationFrameRate"));
-            Core.Globals.ScaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
-            Core.Globals.Offset = (Core.Drawing.PositionOffset)Enum.Parse(typeof(Core.Drawing.PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
+            Core.Globals.frameCap = Convert.ToSingle(petFile.IniReadValue("PetSettings", "UpdateCallInterval"));
+            Core.Globals.animationFrameRate = Convert.ToSingle(petFile.IniReadValue("PetSettings", "AnimationFrameRate"));
+            Core.Globals.scaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
+            Core.Globals.offset = (Core.Drawing.PositionOffset)Enum.Parse(typeof(Core.Drawing.PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
         }
     }
 }

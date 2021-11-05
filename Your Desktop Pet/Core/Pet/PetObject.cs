@@ -5,7 +5,7 @@ namespace Your_Desktop_Pet.Core.Pet
 {
     class PetObject
     {
-        public bool ShouldExit
+        public bool shouldExit
         {
             get { return _sprite.ShouldExit; }
             private set {  _sprite.ShouldExit = value; }
@@ -28,16 +28,16 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Start()
         {
-            _sprite = new Drawing.Sprite(_baseDirectory + "\\sprites", Globals.Offset, true);
+            _sprite = new Drawing.Sprite(_baseDirectory + "\\sprites", Globals.offset, true);
             _sprite.Hide();
-            _sprite.Offset = Globals.Offset;
+            _sprite.offset = Globals.offset;
             _luaHandler = new PetLuaHandler();
 
             LuaTable petObject = _luaHandler.lua.GetTable("pet");
-            petObject["bounds"] = _sprite.Window.Bounds;
+            petObject["bounds"] = _sprite.window.Bounds;
             _luaHandler.lua.SetObjectToPath("pet", petObject);
 
-            if (Globals.LuaTraceback)
+            if (Globals.luaTraceback)
             {
                 _luaHandler.lua.UseTraceback = true;
                 _luaHandler.lua.SetDebugHook(KeraLua.LuaHookMask.Line, 1);
@@ -51,13 +51,13 @@ namespace Your_Desktop_Pet.Core.Pet
         public void Stop()
         {
             _sprite.Hide();
-            _sprite.Window.Dispose();
+            _sprite.window.Dispose();
         }
 
         public void Update()
         {
             LuaTable petObject = _luaHandler.lua.GetTable("pet");
-            petObject["bounds"] = _sprite.Window.Bounds;
+            petObject["bounds"] = _sprite.window.Bounds;
 
             _luaHandler.lua.GetFunction("_Update").Call();
             _luaHandler.lua.GetFunction("_LateUpdate").Call();
@@ -72,7 +72,7 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.ShouldHalt)
                 return;
 
-           _sprite.Animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
+           _sprite.animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
 
             _sprite.SetPosition(Convert.ToSingle(petObject["x"]), Convert.ToSingle(petObject["y"]));
         }
@@ -87,14 +87,14 @@ namespace Your_Desktop_Pet.Core.Pet
             _luaHandler.lua.GetFunction("_Draw").Call();
 
             string anim = (string)petObject["animation"];
-            if (!string.IsNullOrEmpty(anim) && anim != _sprite.Animator.CurrentAnimation)
+            if (!string.IsNullOrEmpty(anim) && anim != _sprite.animator.currentAnimation)
             {
-                _sprite.Animator.ChangeAnimation(anim);
+                _sprite.animator.ChangeAnimation(anim);
                 // Update position in case the size changed
                 _sprite.SetPosition(Convert.ToSingle(petObject["x"]), Convert.ToSingle(petObject["y"]));
             }
 
-            _sprite.Animator.Tick();
+            _sprite.animator.Tick();
         }
 
         private void Lua_DebugHook(object sender, NLua.Event.DebugHookEventArgs e)
