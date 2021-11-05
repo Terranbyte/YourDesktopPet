@@ -11,12 +11,11 @@ namespace Your_Desktop_Pet.Core.Window
     class SpriteWindow : Form
     {
         public InterpolationMode InterpolationMode = InterpolationMode.NearestNeighbor;
-        public System.Windows.IInputElement Input;
 
         protected override bool ShowWithoutActivation { get { return true; } }
         private const int WS_EX_TOPMOST = 0x00000008;
 
-        public SpriteWindow(bool keyboardHandler)
+        public SpriteWindow()
         {
             SetStyle(ControlStyles.SupportsTransparentBackColor | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.Selectable, true);
@@ -31,21 +30,9 @@ namespace Your_Desktop_Pet.Core.Window
             TopMost = true;
             ShowInTaskbar = false;
 
-            Image image = Image.FromFile(@"./default.png");
             BackgroundImageLayout = ImageLayout.Zoom;
-            BackgroundImage = image;
-
-            KeyPreview = false;
-
-            Size = new Size((int)(image.Width * Globals.scaleFactor), (int)(image.Height * Globals.scaleFactor));
-
-            if (keyboardHandler)
-            {
-                KeyPreview = true;
-                Input = new System.Windows.Controls.Button();
-                Input.Focusable = true;
-                Keyboard.Focus(Input);
-            }
+            BackgroundImage = Image.FromFile("./default.png");
+            Size = new Size(0, 0);
 
             Activate();
         }

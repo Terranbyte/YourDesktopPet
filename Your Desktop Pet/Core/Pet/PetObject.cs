@@ -28,7 +28,7 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Start()
         {
-            _sprite = new Drawing.Sprite(_baseDirectory + "\\sprites", Globals.offset, true);
+            _sprite = new Drawing.Sprite(_baseDirectory + "\\sprites", Globals.offset);
             _sprite.Hide();
             _sprite.offset = Globals.offset;
             _luaHandler = new PetLuaHandler();

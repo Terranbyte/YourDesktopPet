@@ -49,9 +49,9 @@ namespace Your_Desktop_Pet.Core.Drawing
             new KeyValuePair<float, float>(0.5f, 0.5f)
         };
 
-        public Sprite(string spriteDirectory, PositionOffset offset = PositionOffset.TopLeft, bool keyboardHandler = false)
+        public Sprite(string spriteDirectory, PositionOffset offset = PositionOffset.TopLeft)
         {
-            window = new Window.SpriteWindow(keyboardHandler);
+            window = new Window.SpriteWindow();
             window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
             window.Hide();
             this.offset = offset;
