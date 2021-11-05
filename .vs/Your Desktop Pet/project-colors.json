@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "c2798b2b-5684-45aa-a8b6-59e69e6452e8": {
+      "ProjectGuid": "c2798b2b-5684-45aa-a8b6-59e69e6452e8",
+      "DisplayName": "Your Desktop Pet",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

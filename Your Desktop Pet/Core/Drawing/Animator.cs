@@ -69,7 +69,7 @@ namespace Your_Desktop_Pet.Core.Drawing
             }
             catch (FileNotFoundException)
             {
-                Helpers.Log.WriteLine("Error", $"Couldn't find the animation called \"{animation}\". This will not impact the program execution but may cause logic problems.");
+                Helpers.Log.WriteLine("Animator", $"Error! Couldn't find the animation called \"{animation}\".");
                 return;
             }
 

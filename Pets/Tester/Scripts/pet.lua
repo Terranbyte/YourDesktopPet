@@ -7,7 +7,7 @@ jump = false
 grounded = false
 
 function _Start()
-    pet.animation = "idle_4"
+    pet.animation = "idle"
     pet.x = 720
     pet.y = 1080
 end
@@ -17,22 +17,22 @@ function _Update()
     jump = _IsKeyDown("Space")
     
     if _IsKeyHeld("D") then
-        pet.animation = "run_6"
+        pet.animation = "run"
         pet.flipX = false
         pet.x = pet.x + 8
     elseif _IsKeyHeld("A") then
-        pet.animation = "run_6"
+        pet.animation = "run"
         pet.flipX = true
         pet.x = pet.x - 8
     else
-        pet.animation = "idle_4"
+        pet.animation = "idle"
     end
     
     if jump or not grounded then
-        pet.animation = "jump_1"
+        pet.animation = "jump"
         
         if yVelocity > 3.5 then
-            pet.animation = "fall_1"
+            pet.animation = "fall"
         end
     end
 end

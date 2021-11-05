@@ -49,7 +49,6 @@ namespace Your_Desktop_Pet
             Core.Helpers.Log.Create();
             Core.Helpers.Log.WriteLine("Main", "Debug start");
 
-            Core.Helpers.Time.Start();
             if (Core.Globals.DebugMode)
             {
                 if (hWnd != IntPtr.Zero)
@@ -60,12 +59,12 @@ namespace Your_Desktop_Pet
             Core.Pet.PetObject pet = new Core.Pet.PetObject(BaseDirectory);
             pet.Start();
 
+            Core.Helpers.Time.Start();
+
             float currentTime = 0;
             float animationTime = 0;
             float updateInterval = 1.0f / Core.Globals.FrameCap;
             float animationInterval = Core.Globals.FrameCap / Core.Globals.AnimationFrameRate;
-
-            int frames = 0;
             float totalTime = 0;
 
             while (!pet.ShouldExit)

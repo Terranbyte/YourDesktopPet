@@ -29,6 +29,7 @@ namespace Your_Desktop_Pet.Core.Window
             FormBorderStyle = FormBorderStyle.None;
             Bounds = new Rectangle(0, 0, Width, Height);
             TopMost = true;
+            ShowInTaskbar = false;
 
             Image image = Image.FromFile(@"./default.png");
             BackgroundImageLayout = ImageLayout.Zoom;
@@ -78,6 +79,20 @@ namespace Your_Desktop_Pet.Core.Window
                 Size = new Size((int)(width * Globals.ScaleFactor), (int)(height * Globals.ScaleFactor));
                 BackgroundImage = new Bitmap((int)(width * Globals.ScaleFactor), (int)(height * Globals.ScaleFactor));
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // SpriteWindow
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "SpriteWindow";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.ResumeLayout(false);
+
         }
     }
 }

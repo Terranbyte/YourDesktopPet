@@ -50,3 +50,7 @@ C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Des
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.exe
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.pdb
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.SuggestedBindingRedirects.cache
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.SuggestedBindingRedirects.cache
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.pdb
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.xml

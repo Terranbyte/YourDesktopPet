@@ -161,7 +161,7 @@ namespace Your_Desktop_Pet.Core.Helpers
                 return bounds.ToArray();
             else
             {
-                Console.Error.WriteLine("Error while retrieving bounds of all windows. This will not impact the program execution but may cause logic problems.");
+                Helpers.Log.WriteLine("PetAPI", "Error! Couldn't retrie window bounds.");
                 return new KeyValuePair<string, Rectangle>[0];
             }
         }
