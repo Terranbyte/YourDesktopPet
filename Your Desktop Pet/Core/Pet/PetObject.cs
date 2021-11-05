@@ -7,8 +7,8 @@ namespace Your_Desktop_Pet.Core.Pet
     {
         public bool shouldExit
         {
-            get { return _sprite.ShouldExit; }
-            private set {  _sprite.ShouldExit = value; }
+            get { return _sprite.shouldExit; }
+            private set {  _sprite.shouldExit = value; }
         }
 
 
@@ -69,7 +69,7 @@ namespace Your_Desktop_Pet.Core.Pet
             else
                 _sprite.Hide();
 
-            if (_sprite.ShouldHalt)
+            if (_sprite.shouldHalt)
                 return;
 
            _sprite.animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
@@ -79,7 +79,7 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Draw()
         {
-            if (_sprite.ShouldHalt)
+            if (_sprite.shouldHalt)
                 return;
 
             LuaTable petObject = _luaHandler.lua.GetTable("pet");

@@ -29,11 +29,8 @@ namespace Your_Desktop_Pet.Core.Drawing
         public PositionOffset offset = PositionOffset.TopLeft;
         public Animator animator;
         #region ohgod
-        public bool ShouldExit = false;
-        public bool ShouldHalt { get { return !_shown; } private set { } }
-        //public bool DdEnter = false;
-        //public bool DdLeave = false;
-        //public bool DdTrigger = false;
+        public bool shouldExit = false;
+        public bool shouldHalt { get { return !_shown; } private set { } }
         #endregion
 
         private Thread _spriteThread = null;
@@ -55,7 +52,7 @@ namespace Your_Desktop_Pet.Core.Drawing
         public Sprite(string spriteDirectory, PositionOffset offset = PositionOffset.TopLeft, bool keyboardHandler = false)
         {
             window = new Window.SpriteWindow(keyboardHandler);
-            window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => ShouldExit = true);
+            window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
             this.offset = offset;
             this.animator = new Animator(ref window, spriteDirectory);
 
