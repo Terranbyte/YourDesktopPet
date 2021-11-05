@@ -53,6 +53,7 @@ namespace Your_Desktop_Pet.Core.Drawing
         {
             window = new Window.SpriteWindow(keyboardHandler);
             window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
+            window.Hide();
             this.offset = offset;
             this.animator = new Animator(ref window, spriteDirectory);
 
@@ -120,6 +121,9 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void SetPosition(float x, float y, object offsetRef = null)
         {
+            if (!_spriteThread.IsAlive)
+                return;
+
             if (window.InvokeRequired)
             {
                 Action safeInvoke = delegate { SetPosition(x, y, (object)_offsetLUT[(int)offset]); };
@@ -131,8 +135,15 @@ namespace Your_Desktop_Pet.Core.Drawing
                 if (offsetRef != null)
                     offset = (KeyValuePair<float, float>)offsetRef;
 
-                window.Left = (int)Math.Round(x - (window.Width * offset.Key));
-                window.Top = (int)Math.Round(y - (window.Height * offset.Value));
+                try
+                {
+                    window.Left = (int)Math.Round(x - (window.Width * offset.Key));
+                    window.Top = (int)Math.Round(y - (window.Height * offset.Value));
+                }
+                catch (Exception e)
+                {
+                    Helpers.Log.WriteLine("Sprite.SetPosition", e.Message);
+                }
             }
         }
     }

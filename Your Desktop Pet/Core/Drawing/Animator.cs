@@ -77,11 +77,11 @@ namespace Your_Desktop_Pet.Core.Drawing
         public void ChangeAnimation(string animation)
         {
             Image source;
+            string animationName = _spriteFiles.Where(s => s.Split('_')[0] == animation).First().ToString();
 
             try
             {
-                source = Image.FromFile(_spriteDirectory + "\\" + _spriteFiles.Where(s => s.Split('_')[0] == animation)
-                    .First().ToString());
+                source = Image.FromFile(_spriteDirectory + "\\" + animationName);
             }
             catch (FileNotFoundException)
             {
@@ -89,8 +89,8 @@ namespace Your_Desktop_Pet.Core.Drawing
                 return;
             }
 
-            string[] temp = animation.Split('_');
-            _numFrames = Convert.ToInt32(temp[temp.Length - 1]);
+            string[] temp = animationName.Split('_', '.');
+            _numFrames = Convert.ToInt32(temp[temp.Length - 2]);
             _window.BackgroundImage.Dispose();
             _window.ChangeSize(source.Width / _numFrames, source.Height);
 
