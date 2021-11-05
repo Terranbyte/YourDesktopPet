@@ -9,8 +9,8 @@ namespace Your_Desktop_Pet.Core.Helpers
 {
     static class Time
     {
-        public static float ElapsedTime { get; private set; }
-        public static float DeltaTime {  get; private set; }
+        public static float elapsedTime { get; private set; }
+        public static float deltaTime {  get; private set; }
 
         private static Stopwatch _watch;
         private static float _prevElapsed = 0;
@@ -20,16 +20,16 @@ namespace Your_Desktop_Pet.Core.Helpers
             _watch = new Stopwatch();
             _watch.Start();
 
-            _prevElapsed = ElapsedTime;
-            ElapsedTime = (float)_watch.Elapsed.TotalSeconds;
-            DeltaTime = ElapsedTime - _prevElapsed;
+            _prevElapsed = elapsedTime;
+            elapsedTime = (float)_watch.Elapsed.TotalSeconds;
+            deltaTime = elapsedTime - _prevElapsed;
         }
 
         public static void Update()
         {
-            _prevElapsed = ElapsedTime;
-            ElapsedTime = (float)_watch.Elapsed.TotalSeconds;
-            DeltaTime = ElapsedTime - _prevElapsed;
+            _prevElapsed = elapsedTime;
+            elapsedTime = (float)_watch.Elapsed.TotalSeconds;
+            deltaTime = elapsedTime - _prevElapsed;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Your_Desktop_Pet.Core.Helpers
     {
         public static void Create()
         {
-            if (Globals.DebugMode)
+            if (Globals.debugMode)
                 return;
 
             TextWriterTraceListener listener = new TextWriterTraceListener(new StreamWriter("./debug.log", false));
@@ -30,7 +30,7 @@ namespace Your_Desktop_Pet.Core.Helpers
             if (msg == null)
                 msg = "null";
 
-            if (Globals.DebugMode)
+            if (Globals.debugMode)
                 Console.WriteLine($"[{debugSignature}({DateTime.Now.ToString()})] {msg.ToString()}");
             else
             {

@@ -25,9 +25,9 @@ namespace Your_Desktop_Pet.Core.Drawing
 
     class Sprite
     {
-        public Window.SpriteWindow Window = null;
-        public PositionOffset Offset = PositionOffset.TopLeft;
-        public Animator Animator;
+        public Window.SpriteWindow window = null;
+        public PositionOffset offset = PositionOffset.TopLeft;
+        public Animator animator;
         #region ohgod
         public bool ShouldExit = false;
         public bool ShouldHalt { get { return !_shown; } private set { } }
@@ -54,17 +54,22 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public Sprite(string spriteDirectory, PositionOffset offset = PositionOffset.TopLeft, bool keyboardHandler = false)
         {
-            Window = new Window.SpriteWindow(keyboardHandler);
-            Window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => ShouldExit = true);
-            Offset = offset;
-            this.Animator = new Animator(ref Window, spriteDirectory);
+            window = new Window.SpriteWindow(keyboardHandler);
+            window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => ShouldExit = true);
+            this.offset = offset;
+            this.animator = new Animator(ref window, spriteDirectory);
 
             _spriteThread = new Thread(new ThreadStart(() =>
             {
-                Window.ShowDialog();
+                window.ShowDialog();
             }));
             _spriteThread.SetApartmentState(ApartmentState.STA);
             _spriteThread.Start();
+        }
+
+        ~Sprite()
+        {
+
         }
 
         public void Show()
@@ -72,10 +77,10 @@ namespace Your_Desktop_Pet.Core.Drawing
             if (_shown || !_spriteThread.IsAlive)
                 return;
 
-            if (Window.InvokeRequired)
+            if (window.InvokeRequired)
             {
                 Action safeInvoke = delegate { Show(); };
-                Window.Invoke(safeInvoke);
+                window.Invoke(safeInvoke);
             }
             else
             {
@@ -89,10 +94,10 @@ namespace Your_Desktop_Pet.Core.Drawing
             if (!_shown || !_spriteThread.IsAlive)
                 return;
 
-            if (Window.InvokeRequired)
+            if (window.InvokeRequired)
             {
                 Action safeInvoke = delegate { Hide(); };
-                Window.Invoke(safeInvoke);
+                window.Invoke(safeInvoke);
                 return;
             }
             else
@@ -104,24 +109,24 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Stop()
         {
-            if (Window.InvokeRequired)
+            if (window.InvokeRequired)
             {
                 Action safeInvoke = delegate { Stop(); };
-                Window.Invoke(safeInvoke);
+                window.Invoke(safeInvoke);
             }
             else
             {
-                Window.Dispose();
+                window.Dispose();
                 _spriteThread.Join();
             }
         }
 
         public void SetPosition(float x, float y, object offsetRef = null)
         {
-            if (Window.InvokeRequired)
+            if (window.InvokeRequired)
             {
-                Action safeInvoke = delegate { SetPosition(x, y, (object)_offsetLUT[(int)Offset]); };
-                Window.Invoke(safeInvoke);
+                Action safeInvoke = delegate { SetPosition(x, y, (object)_offsetLUT[(int)offset]); };
+                window.Invoke(safeInvoke);
             }
             else
             {
@@ -129,8 +134,8 @@ namespace Your_Desktop_Pet.Core.Drawing
                 if (offsetRef != null)
                     offset = (KeyValuePair<float, float>)offsetRef;
 
-                Window.Left = (int)Math.Round(x - (Window.Width * offset.Key));
-                Window.Top = (int)Math.Round(y - (Window.Height * offset.Value));
+                window.Left = (int)Math.Round(x - (window.Width * offset.Key));
+                window.Top = (int)Math.Round(y - (window.Height * offset.Value));
             }
         }
     }

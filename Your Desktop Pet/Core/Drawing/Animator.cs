@@ -10,10 +10,11 @@ namespace Your_Desktop_Pet.Core.Drawing
 {
     class Animator
     {
-        public bool FlipX = false;
-        public string CurrentAnimation = "";
+        public bool flipX = false;
+        public string currentAnimation = "";
 
         private Image[] _frames;
+        private string[] _spriteFiles;
         private Window.SpriteWindow _window;
         private int _numFrames = 0;
         private int _currentFrame = 0;
@@ -22,8 +23,22 @@ namespace Your_Desktop_Pet.Core.Drawing
         public Animator(ref Window.SpriteWindow window, string spriteDirectory)
         {
             _frames = new Image[0];
+            _spriteFiles = Directory
+                .EnumerateFiles(spriteDirectory, "*", SearchOption.TopDirectoryOnly)
+                .Select(Path.GetFileName)
+                .ToArray();
             _window = window;
             _spriteDirectory = spriteDirectory;
+        }
+
+        ~Animator()
+        {
+            for (int i = 0; i < _frames.Length; i++)
+            {
+                _frames[i].Dispose();
+            }
+
+            _window.Dispose();
         }
 
         private void SplitFrames(Image source, int total, int width, int height)
@@ -48,10 +63,10 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void FlipSprite(bool flipX)
         {
-            if (this.FlipX == flipX)
+            if (this.flipX == flipX)
                 return;
 
-            this.FlipX = flipX;
+            this.flipX = flipX;
             foreach (Image image in _frames)
             {
                 image.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -65,7 +80,8 @@ namespace Your_Desktop_Pet.Core.Drawing
 
             try
             {
-                source = Image.FromFile(_spriteDirectory + "\\" + animation + ".png");
+                source = Image.FromFile(_spriteDirectory + "\\" + _spriteFiles.Where(s => s.Split('_')[0] == animation)
+                    .First().ToString());
             }
             catch (FileNotFoundException)
             {
@@ -78,12 +94,12 @@ namespace Your_Desktop_Pet.Core.Drawing
             _window.BackgroundImage.Dispose();
             _window.ChangeSize(source.Width / _numFrames, source.Height);
 
-            CurrentAnimation = animation;
+            currentAnimation = animation;
             _currentFrame = 0;
 
             SplitFrames(source, _numFrames, source.Width / _numFrames, source.Height);
 
-            if (FlipX)
+            if (flipX)
             {
                 foreach (Image image in _frames)
                 {

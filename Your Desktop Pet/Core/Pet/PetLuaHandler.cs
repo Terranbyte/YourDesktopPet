@@ -15,7 +15,7 @@ namespace Your_Desktop_Pet.Core.Pet
     class PetLuaHandler
     {
         public Lua lua;
-        public bool Ready = false;
+        public bool ready = false;
 
         public PetLuaHandler()
         {
@@ -33,7 +33,7 @@ namespace Your_Desktop_Pet.Core.Pet
             PopulateVariables();
             Helpers.Log.WriteLine("LuaHandler", "Done!");
 
-            Ready = true;
+            ready = true;
         }
 
         private void CreateVariables()

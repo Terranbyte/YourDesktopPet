@@ -37,7 +37,7 @@ namespace Your_Desktop_Pet.Core.Window
 
             KeyPreview = false;
 
-            Size = new Size((int)(image.Width * Globals.ScaleFactor), (int)(image.Height * Globals.ScaleFactor));
+            Size = new Size((int)(image.Width * Globals.scaleFactor), (int)(image.Height * Globals.scaleFactor));
 
             if (keyboardHandler)
             {
@@ -76,8 +76,8 @@ namespace Your_Desktop_Pet.Core.Window
             }
             else
             {
-                Size = new Size((int)(width * Globals.ScaleFactor), (int)(height * Globals.ScaleFactor));
-                BackgroundImage = new Bitmap((int)(width * Globals.ScaleFactor), (int)(height * Globals.ScaleFactor));
+                Size = new Size((int)(width * Globals.scaleFactor), (int)(height * Globals.scaleFactor));
+                BackgroundImage = new Bitmap((int)(width * Globals.scaleFactor), (int)(height * Globals.scaleFactor));
             }
         }
 
