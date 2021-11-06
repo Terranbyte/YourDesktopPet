@@ -74,12 +74,11 @@ namespace Your_Desktop_Pet.Core.Window
             // 
             // SpriteWindow
             // 
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new Size(284, 261);
             this.Name = "SpriteWindow";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.ResumeLayout(false);
-
         }
     }
 }

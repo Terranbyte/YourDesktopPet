@@ -30,6 +30,10 @@ namespace Your_Desktop_Pet
             ShowWindow(hWnd, SW_HIDE);
             Application.EnableVisualStyles();
 
+            Application.Run(new Forms.Launcher());
+
+            return;
+
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Filter = "ini files (*.ini)|*.ini";
