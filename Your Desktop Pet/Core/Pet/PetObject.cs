@@ -1,41 +1,56 @@
 ﻿using NLua;
 using System;
+using Your_Desktop_Pet.Core.Drawing;
 
 namespace Your_Desktop_Pet.Core.Pet
 {
     class PetObject
     {
+        public float frameCap = 60f;
+        public float animationFrameRate = 12f;
+
+        public float currentTime = 0;
+        public float animationTime = 0;
+        public float updateInterval = 1.0f / 60f;
+        public float animationInterval = 60f / 12;
+        public float totalTime = 0;
+
         public bool shouldExit
         {
             get { return _sprite.shouldExit; }
             private set {  _sprite.shouldExit = value; }
         }
 
-
         private PetLuaHandler _luaHandler = null;
-        public Drawing.Sprite _sprite = null;
+        public Sprite _sprite = null;
         private string _baseDirectory = "";
 
         public PetObject(string baseDirectory)
         {
             _baseDirectory = baseDirectory;
-        }
-
-        ~PetObject()
-        {
-            Stop();
+            _sprite = new Sprite(_baseDirectory + "\\sprites");
+            _sprite.Hide();
         }
 
         public void Start()
         {
-            _sprite = new Drawing.Sprite(_baseDirectory + "\\sprites", Globals.offset);
-            _sprite.Hide();
-            _sprite.offset = Globals.offset;
+            Ini.IniFile petFile = new Ini.IniFile(_baseDirectory + "\\pet.ini");
+
+            frameCap = Convert.ToSingle(petFile.IniReadValue("PetSettings", "UpdateCallInterval"));
+            animationFrameRate = Convert.ToSingle(petFile.IniReadValue("PetSettings", "AnimationFrameRate"));
+            _sprite.offset = (PositionOffset)Enum.Parse(typeof(Core.Drawing.PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
+            _sprite.window.scaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
+
             _luaHandler = new PetLuaHandler();
 
             LuaTable petObject = _luaHandler.lua.GetTable("pet");
             petObject["bounds"] = _sprite.window.Bounds;
             _luaHandler.lua.SetObjectToPath("pet", petObject);
+
+            _sprite.animator = new Animator(ref _sprite.window, _baseDirectory + "\\sprites");
+
+            updateInterval = 1.0f / frameCap;
+            animationInterval = frameCap / animationFrameRate;
 
             if (Globals.luaTraceback)
             {
@@ -46,6 +61,9 @@ namespace Your_Desktop_Pet.Core.Pet
 
             _luaHandler.lua.DoFile(_baseDirectory + @"\Scripts\pet.lua");
             _luaHandler.lua.GetFunction("_Start").Call();
+            Console.WriteLine((bool)petObject["show"]);
+            if ((bool)petObject["show"])
+                _sprite.Show();
         }
 
         public void Stop()

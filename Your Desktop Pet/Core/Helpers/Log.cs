@@ -27,6 +27,9 @@ namespace Your_Desktop_Pet.Core.Helpers
 
         public static void WriteLine(string debugSignature, object msg)
         {
+            if (Trace.Listeners.Count == 0)
+                return;
+
             if (msg == null)
                 msg = "null";
 

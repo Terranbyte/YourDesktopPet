@@ -72,6 +72,12 @@
     <Compile Include="Core\Helpers\Time.cs" />
     <Compile Include="Core\Pet\PetLuaHandler.cs" />
     <Compile Include="Core\Pet\PetObject.cs" />
+    <Compile Include="Forms\ActivePets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ActivePets.Designer.cs">
+      <DependentUpon>ActivePets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SpriteWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="Forms\ActivePets.resx">
+      <DependentUpon>ActivePets.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Lua\PetVariables.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

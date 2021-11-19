@@ -55,7 +55,6 @@ namespace Your_Desktop_Pet.Core.Drawing
             window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
             window.Hide();
             this.offset = offset;
-            this.animator = new Animator(ref window, spriteDirectory);
 
             _spriteThread = new Thread(new ThreadStart(() =>
             {
@@ -63,6 +62,8 @@ namespace Your_Desktop_Pet.Core.Drawing
             }));
             _spriteThread.SetApartmentState(ApartmentState.STA);
             _spriteThread.Start();
+
+            Hide();
         }
 
         ~Sprite()
@@ -72,7 +73,7 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Show()
         {
-            if (_shown || !_spriteThread.IsAlive)
+            if (_shown || !_spriteThread.IsAlive || window.IsDisposed)
                 return;
 
             if (window.InvokeRequired)
@@ -89,7 +90,7 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Hide()
         {
-            if (!_shown || !_spriteThread.IsAlive)
+            if (!_shown || !_spriteThread.IsAlive || window.IsDisposed)
                 return;
 
             if (window.InvokeRequired)
@@ -121,7 +122,7 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void SetPosition(float x, float y, object offsetRef = null)
         {
-            if (!_spriteThread.IsAlive)
+            if (!_spriteThread.IsAlive || window.IsDisposed)
                 return;
 
             if (window.InvokeRequired)

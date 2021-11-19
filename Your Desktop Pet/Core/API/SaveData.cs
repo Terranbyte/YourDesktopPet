@@ -10,7 +10,7 @@ namespace Your_Desktop_Pet.Core.API
     {
         public static object ReadValue(string key)
         {
-            Ini.IniFile file = new Ini.IniFile(Program.baseDirectory + "\\pet.ini");
+            Ini.IniFile file = new Ini.IniFile(Core.Globals.dataPath + "\\pet.ini");
             try
             {
                 return file.IniReadValue("PetCustomData", key);
@@ -24,7 +24,7 @@ namespace Your_Desktop_Pet.Core.API
 
         public static void WriteValue(string key, object value)
         {
-            Ini.IniFile file = new Ini.IniFile(Program.baseDirectory + "\\pet.ini");
+            Ini.IniFile file = new Ini.IniFile(Core.Globals.dataPath + "\\pet.ini");
             file.IniWriteValue("PetCustomData", key, value.ToString());
         }
     }

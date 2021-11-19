@@ -11,6 +11,7 @@ namespace Your_Desktop_Pet.Core.Window
     class SpriteWindow : Form
     {
         public InterpolationMode InterpolationMode = InterpolationMode.NearestNeighbor;
+        public float scaleFactor;
 
         protected override bool ShowWithoutActivation { get { return true; } }
         private const int WS_EX_TOPMOST = 0x00000008;
@@ -50,6 +51,7 @@ namespace Your_Desktop_Pet.Core.Window
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             e.Graphics.InterpolationMode = this.InterpolationMode;
+            e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
             base.OnPaintBackground(e);
         }
 
@@ -63,8 +65,8 @@ namespace Your_Desktop_Pet.Core.Window
             }
             else
             {
-                Size = new Size((int)(width * Globals.scaleFactor), (int)(height * Globals.scaleFactor));
-                BackgroundImage = new Bitmap((int)(width * Globals.scaleFactor), (int)(height * Globals.scaleFactor));
+                Size = new Size((int)(width * scaleFactor), (int)(height * scaleFactor));
+                BackgroundImage = new Bitmap(Size.Width, Size.Height);
             }
         }
 
