@@ -5,6 +5,11 @@
       "ProjectGuid": "c2798b2b-5684-45aa-a8b6-59e69e6452e8",
       "DisplayName": "Your Desktop Pet",
       "ColorIndex": 0
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
     }
   },
   "NextColorIndex": 1

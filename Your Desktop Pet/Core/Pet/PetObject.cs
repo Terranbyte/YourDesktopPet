@@ -68,8 +68,11 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Stop()
         {
-            _sprite.Hide();
-            _sprite.window.Dispose();
+            if (Globals.luaTraceback)
+                _luaHandler.lua.RemoveDebugHook();
+
+            _luaHandler.lua.Dispose();
+            //_sprite.Stop();
         }
 
         public void Update()

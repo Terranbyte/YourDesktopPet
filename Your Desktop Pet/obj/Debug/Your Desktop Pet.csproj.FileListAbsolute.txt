@@ -54,3 +54,8 @@ C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Des
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.pdb
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.xml
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.pdb
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\ICSharpCode.SharpZipLib.xml
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.ActivePets.resources
+C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.CopyComplete
