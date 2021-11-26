@@ -1,5 +1,6 @@
 windows = _GetWindows(false, true)
 baseGravity = 0.53
+desktopHeight = desktopBounds.Height
 --gravityMultiplier = 0.5
 yVelocity = 0
 yMaxVelocity = 30
@@ -8,8 +9,8 @@ grounded = false
 
 function _Start()
     pet.animation = "idle"
-    pet.x = 720
-    pet.y = 1080
+    pet.x = desktopBounds.Width/2
+    pet.y = desktopHeight
 end
 
 function _Update()
@@ -74,8 +75,8 @@ function _LateUpdate()
     end
     
     -- check ground collision
-    if pet.y >= desktopBounds.Height then
-        pet.y = desktopBounds.Height
+    if pet.y >= desktopHeight then
+        pet.y = desktopHeight
         yVelocity = 0
         grounded = true
     end

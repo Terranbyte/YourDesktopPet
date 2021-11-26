@@ -17,6 +17,7 @@ namespace Your_Desktop_Pet.Forms
     public partial class Launcher : Form
     {
         private Core.Pet.PetObject pet;
+        private Queue<float> fpsSamples = new Queue<float>();
         private string[] petDirectories = new string[0];
         private IntPtr hWnd;
 
@@ -43,6 +44,11 @@ namespace Your_Desktop_Pet.Forms
                 ShowWindow(hWnd, SW_HIDE);
 
             GetPetList();
+
+            for (int i = 0; i < 25; i++)
+            {
+                fpsSamples.Enqueue(1f / 60f);
+            }
 
             Core.Helpers.Time.Start();
         }
@@ -156,6 +162,10 @@ namespace Your_Desktop_Pet.Forms
 
         private void SpawnPet(string petPath)
         {
+            if (pet != null)
+                pet.Stop();
+
+            Console.WriteLine("Test");
             pet = new Core.Pet.PetObject(petPath);
             pet.Start();
         }
@@ -275,7 +285,10 @@ namespace Your_Desktop_Pet.Forms
             if (pet.currentTime < pet.updateInterval)
                 return;
 
-            Console.Title = $"FPS: {1 / pet.currentTime}";
+            fpsSamples.Dequeue();
+            fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
+
+            Console.Title = $"FPS: {1f / fpsSamples.Average()}";
 
             pet.animationTime += 1;
 
