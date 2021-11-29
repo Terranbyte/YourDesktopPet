@@ -16,13 +16,13 @@ end
 
 function _Update()
     -- take input
-    jump = _IsKeyDown("Space")
+    jump = _IsKeyDown(virtualKey.SPACE)
     
-    if _IsKeyHeld("D") then
+    if _IsKeyHeld(virtualKey.D) then
         pet.animation = "run"
         pet.flipX = false
         pet.x = pet.x + 8
-    elseif _IsKeyHeld("A") then
+    elseif _IsKeyHeld(virtualKey.A) then
         pet.animation = "run"
         pet.flipX = true
         pet.x = pet.x - 8
@@ -30,6 +30,8 @@ function _Update()
         pet.animation = "idle"
     end
     
+    -- print(jump)
+
     if jump or not grounded then
         pet.animation = "jump"
         
@@ -39,8 +41,13 @@ function _Update()
     end
 end
 
+function test()
+    print("This is a test")
+end
+
 function _LateUpdate()
     windows = _GetWindows(false, true)
+    -- windows = {}
 
     yVelocity = yVelocity + baseGravity
     grounded = false
@@ -50,25 +57,22 @@ function _LateUpdate()
     end
 
     -- check window collisions
-    for i = 0, tablelength(windows) - 1, 1 do
+    for k, v in pairs(windows) do
         -- adjusted pet bounds
-        --ab = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20)
+        --ab = BoundsFromXYWH(pet.bounds.x + 52, pet.y - 20, pet.bounds.w - 128, 20)
         -- projected pet bounds
         pb = BoundsFromXYWH(pet.bounds.x + 52, pet.y - 20, pet.bounds.w - 128, 20 + yVelocity)
-
-        wb = windows[i].bounds
-        wb = BoundsFromXYWH(wb.x, wb.y, wb.w, 20)
         
+        wb = BoundsFromXYWH(v.bounds.x, v.bounds.y, v.bounds.w, 20)
         -- if i == 0 then
         --     print(windows[i].name)
-        --     print(ab.X .. " " .. ab.Y .. " " .. ab.Width .. " " .. ab.Height)
-        --     print(wb.X .. " " .. wb.Y .. " " .. wb.Width .. " " .. wb.Height)
+        --     print(ab.x .. " " .. ab.y .. " " .. ab.w .. " " .. ab.h)
+        --     print(wb.x .. " " .. wb.y .. " " .. wb.w .. " " .. wb.h)
         -- end
 
         -- check projected and current bounds against the window bounds
-        if isColliding(pb, wb) and yVelocity >= 0 then
-            -- print(pb.x .. " " .. pb.w)
-            pet.y = wb.Y
+        if IsColliding(pb, wb) and yVelocity >= 0 then
+            pet.y = wb.y
             yVelocity = 0
             grounded = true
         end
@@ -85,7 +89,7 @@ function _LateUpdate()
         yVelocity = -15
         grounded = false
     end
-    
+
     pet.y = pet.y + yVelocity
 end
 

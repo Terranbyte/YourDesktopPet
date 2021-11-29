@@ -275,6 +275,7 @@ namespace Your_Desktop_Pet.Forms
         private void updateTimer_Tick(object sender, EventArgs e)
         {
             Core.Helpers.Time.Update();
+            Core.API.Input.InputProvider.Update();
 
             fpsSamples.Dequeue();
             fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
@@ -298,8 +299,6 @@ namespace Your_Desktop_Pet.Forms
                 return;
 
             pet.animationTime += 1;
-
-            Core.API.Input.InputProvider.Update();
             pet.Update();
 
             if (pet.animationTime >= pet.animationInterval)

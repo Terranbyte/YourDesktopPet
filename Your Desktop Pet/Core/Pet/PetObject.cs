@@ -38,26 +38,18 @@ namespace Your_Desktop_Pet.Core.Pet
 
             frameCap = Convert.ToSingle(petFile.IniReadValue("PetSettings", "UpdateCallInterval"));
             animationFrameRate = Convert.ToSingle(petFile.IniReadValue("PetSettings", "AnimationFrameRate"));
-            _sprite.offset = (PositionOffset)Enum.Parse(typeof(Core.Drawing.PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
+            _sprite.offset = (PositionOffset)Enum.Parse(typeof(PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
             _sprite.window.scaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
 
             _luaHandler = new Lua.PetLuaHandler();
 
             Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
             petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
-            //_luaHandler.lua.SetObjectToPath("pet", petTable);
 
             _sprite.animator = new Animator(ref _sprite.window, _baseDirectory + "\\sprites");
 
             updateInterval = 1.0f / frameCap;
             animationInterval = frameCap / animationFrameRate;
-
-            //if (Globals.luaTraceback)
-            //{
-            //    _luaHandler.lua.UseTraceback = true;
-            //    _luaHandler.lua.SetDebugHook(KeraLua.LuaHookMask.Line, 1);
-            //    _luaHandler.lua.DebugHook += Lua_DebugHook;
-            //}
 
             _luaHandler.lua.DoFile(_baseDirectory + @"\Scripts\pet.lua");
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Start"]);
@@ -68,7 +60,7 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Stop()
         {
-            //_sprite.Stop();
+            //_sprite.Stop();                                                                                
         }
 
         public void Update()
@@ -77,9 +69,7 @@ namespace Your_Desktop_Pet.Core.Pet
             petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
 
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Update"]);
-            //_luaHandler.lua.Call(_luaHandler.lua.Globals["_LateUpdate"]);
-
-            //Apply changes
+            _luaHandler.lua.Call(_luaHandler.lua.Globals["_LateUpdate"]);
 
             if ((bool)petTable["show"] == true)
                 _sprite.Show();
@@ -107,16 +97,10 @@ namespace Your_Desktop_Pet.Core.Pet
             if (!string.IsNullOrEmpty(anim) && anim != _sprite.animator.currentAnimation)
             {
                 _sprite.animator.ChangeAnimation(anim);
-                // Update position in case the size changed
                 _sprite.SetPosition(Convert.ToSingle(petTable["x"]), Convert.ToSingle(petTable["y"]));
             }
 
             _sprite.animator.Tick();
         }
-
-        //private void Lua_DebugHook(object sender, NLua.Event.DebugHookEventArgs e)
-        //{
-        //    Helpers.Log.WriteLine("LuaTraceback", _luaHandler.lua.GetDebugTraceback());
-        //}
     }
 }

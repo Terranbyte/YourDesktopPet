@@ -19,7 +19,7 @@ namespace Your_Desktop_Pet.Core.Lua
 
         public PetLuaHandler()
         {
-            lua = new Script(CoreModules.Preset_SoftSandbox & ~CoreModules.Dynamic);
+            lua = new Script(CoreModules.Preset_SoftSandbox ^ CoreModules.Dynamic);
 
             Helpers.Log.WriteLine("LuaHandler", "Creating variables...");
             CreateVariables();
@@ -35,6 +35,9 @@ namespace Your_Desktop_Pet.Core.Lua
         private void CreateVariables()
         {
             lua.DoFile("LuaScripts/PetVariables.lua");
+
+            UserData.RegisterType<API.Input.VirtualKey>();
+            lua.Globals["virtualKey"] = UserData.CreateStatic<API.Input.VirtualKey>();
         }
 
         private void RegisterFunctions()
@@ -45,13 +48,14 @@ namespace Your_Desktop_Pet.Core.Lua
             lua.Globals["_Print"] = (Action<string, object>)Helpers.Log.WriteLine;
             lua.Globals["_GetDesktopBounds"] = (Func<Table>)GetDesktopBounds;
             lua.Globals["_GetWindows"] = (Func<bool, bool, Table>)GetWindows;
+            lua.Globals["_tableLength"] = (Func<Table, int>)GetTableLength;
             lua.Globals["_ReadValue"] = (Func<string, object>)API.SaveData.ReadValue;
             lua.Globals["_SaveValue"] = (Action<string, object>)API.SaveData.WriteValue;
             lua.Globals["_GetMousePos"] = (Func<Point>)API.Input.InputProvider.GetMousePos;
             lua.Globals["_MouseButtonDown"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonDown;
             lua.Globals["_MouseButtonUp"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonUp;
-            lua.Globals["_IsKeyDown"] = (Func<string, bool>)API.Input.InputProvider.IsKeyDown;
-            lua.Globals["_IsKeyHeld"] = (Func<string, bool>)API.Input.InputProvider.IsKeyHeld;
+            lua.Globals["_IsKeyDown"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyDown;
+            lua.Globals["_IsKeyHeld"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyHeld;
             //lua.Globals["_IsKeyUp"] = (Func<string, bool>)API.Input.InputProvider.IsKeyUp;
         }
 
@@ -85,13 +89,18 @@ namespace Your_Desktop_Pet.Core.Lua
 
             for (int i = 0; i < windows.Length; i++)
             {
-                window.Clear();
+                window = new Table(lua);
                 window["name"] = windows[i].Key;
                 window["bounds"] = LuaHelper.RectToTable(windows[i].Value, lua);
-                windowsTable[i] = window;
+                windowsTable.Set(DynValue.NewNumber(i), DynValue.NewTable(window));
             }
             
             return windowsTable;
+        }
+
+        private int GetTableLength(Table table)
+        {
+            return table.Length;
         }
     }
 #pragma warning restore IDE0051 // Remove unused private members

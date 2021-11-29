@@ -1,10 +1,4 @@
-﻿function tablelength(T)
-    local count = 0
-    for _ in pairs(T) do count = count + 1 end
-    return count
-end
-
-function isColliding(a, b)
+﻿function IsColliding(a, b)
     if ((b.x >= a.x + a.w) or (b.x + b.w <= a.x) or (b.y >= a.y + a.h) or (b.y + b.h <= a.y)) then
         return false 
     else 
@@ -13,7 +7,7 @@ function isColliding(a, b)
  end
 
 function BoundsFromXYWH(x, y, w, h)
-    t = {}
+    local t = {}
     t.x = x
     t.y = y
     t.w = w
