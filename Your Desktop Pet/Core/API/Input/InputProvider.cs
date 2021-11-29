@@ -268,7 +268,10 @@ namespace Your_Desktop_Pet.Core.API.Input
             if ((GetAsyncKeyState((int)_lastKey) & WM_KEYDOWN) != WM_KEYDOWN)
             {
                 if (_lastKey != VirtualKey.NONE)
+                {
                     _lastKey = VirtualKey.NONE;
+                    _currentKey = VirtualKey.NONE;
+                }
             }
         }
 
