@@ -10,17 +10,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace Your_Desktop_Pet.Core.Pet
+namespace Your_Desktop_Pet.Core.Lua
 {
 #pragma warning disable IDE0051 // Remove unused private members
     class PetLuaHandler
     {
         public Script lua;
-        public bool ready = false;
 
         public PetLuaHandler()
         {
-            lua = new Script();
+            lua = new Script(CoreModules.Preset_SoftSandbox & ~CoreModules.Dynamic);
 
             Helpers.Log.WriteLine("LuaHandler", "Creating variables...");
             CreateVariables();
@@ -31,22 +30,20 @@ namespace Your_Desktop_Pet.Core.Pet
             Helpers.Log.WriteLine("LuaHandler", "Populating variables...");
             PopulateVariables();
             Helpers.Log.WriteLine("LuaHandler", "Done!");
-
-            ready = true;
         }
 
         private void CreateVariables()
         {
-            lua.DoFile("Lua/PetVariables.lua");
+            lua.DoFile("LuaScripts/PetVariables.lua");
         }
 
         private void RegisterFunctions()
         {
-            lua.DoFile("Lua/LuaOverrideFunctions.lua");
-            lua.DoFile("Lua/PetAPIFunctions.lua");
+            lua.DoFile("LuaScripts/LuaOverrideFunctions.lua");
+            lua.DoFile("LuaScripts/PetAPIFunctions.lua");
 
             lua.Globals["_Print"] = (Action<string, object>)Helpers.Log.WriteLine;
-            lua.Globals["_GetDesktopBounds"] = (Func<Rectangle>)GetDesktopBounds;
+            lua.Globals["_GetDesktopBounds"] = (Func<Table>)GetDesktopBounds;
             lua.Globals["_GetWindows"] = (Func<bool, bool, Table>)GetWindows;
             lua.Globals["_ReadValue"] = (Func<string, object>)API.SaveData.ReadValue;
             lua.Globals["_SaveValue"] = (Action<string, object>)API.SaveData.WriteValue;
@@ -60,30 +57,29 @@ namespace Your_Desktop_Pet.Core.Pet
 
         private void PopulateVariables()
         {
-            lua.NewTable("pet");
-            lua.NewTable("pet.data");
             lua.DoString("desktopBounds = _GetDesktopBounds()");
             lua.DoString("windows = _GetWindows(true, true)");
 
-            petObject["x"] = 0;
-            petObject["y"] = 0;
-            petObject["bounds"] = Rectangle.FromLTRB(0, 0, 0, 0);
-            petObject["animation"] = "";
-            petObject["show"] = true;
-            petObject["flipX"] = false;
+            Table petTable = new Table(lua);
 
-            lua.SetObjectToPath("pet", petObject);
+            petTable["x"] = 10;
+            petTable["y"] = 0;
+            petTable["bounds"] = LuaHelper.RectToTable(Rectangle.FromLTRB(0, 0, 0, 0), lua);
+            petTable["animation"] = "";
+            petTable["show"] = true;
+            petTable["flipX"] = false;
+
+            lua.Globals.Set(DynValue.NewString("pet"), DynValue.NewTable(petTable));
         }
 
-        private Rectangle GetDesktopBounds()
+        private Table GetDesktopBounds()
         {
-            return SystemInformation.VirtualScreen;
+            return LuaHelper.RectToTable(SystemInformation.VirtualScreen, lua);
         }
 
         private Table GetWindows(bool removeOverlap, bool removeMaximize)
         {
-            Script tempLua = new Script();
-            Table window = new Table(tempLua);
+            Table window = new Table(lua);
             Table windowsTable = new Table(lua);
             KeyValuePair<string, Rectangle>[] windows = Helpers.DesktopWindows.GetAllWindowBounds(removeOverlap, removeMaximize);
 
@@ -91,7 +87,7 @@ namespace Your_Desktop_Pet.Core.Pet
             {
                 window.Clear();
                 window["name"] = windows[i].Key;
-                window["bounds"] = windows[i].Value;
+                window["bounds"] = LuaHelper.RectToTable(windows[i].Value, lua);
                 windowsTable[i] = window;
             }
             

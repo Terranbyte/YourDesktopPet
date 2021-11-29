@@ -1,6 +1,6 @@
 windows = _GetWindows(false, true)
 baseGravity = 0.53
-desktopHeight = desktopBounds.Height
+desktopHeight = desktopBounds.h
 --gravityMultiplier = 0.5
 yVelocity = 0
 yMaxVelocity = 30
@@ -9,8 +9,9 @@ grounded = false
 
 function _Start()
     pet.animation = "idle"
-    pet.x = desktopBounds.Width/2
+    pet.x = desktopBounds.w/2
     pet.y = desktopHeight
+    show = true
 end
 
 function _Update()
@@ -39,7 +40,6 @@ function _Update()
 end
 
 function _LateUpdate()
-    --print(pet.y)
     windows = _GetWindows(false, true)
 
     yVelocity = yVelocity + baseGravity
@@ -54,10 +54,10 @@ function _LateUpdate()
         -- adjusted pet bounds
         --ab = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20)
         -- projected pet bounds
-        pb = BoundsFromXYWH(pet.bounds.X + 52, pet.y - 20, pet.bounds.Width - 128, 20 + yVelocity)
+        pb = BoundsFromXYWH(pet.bounds.x + 52, pet.y - 20, pet.bounds.w - 128, 20 + yVelocity)
 
         wb = windows[i].bounds
-        wb = BoundsFromXYWH(wb.X, wb.Y, wb.Width, 20)
+        wb = BoundsFromXYWH(wb.x, wb.y, wb.w, 20)
         
         -- if i == 0 then
         --     print(windows[i].name)
@@ -67,7 +67,7 @@ function _LateUpdate()
 
         -- check projected and current bounds against the window bounds
         if isColliding(pb, wb) and yVelocity >= 0 then
-            print(pb.X .. " " .. pb.Width)
+            -- print(pb.x .. " " .. pb.w)
             pet.y = wb.Y
             yVelocity = 0
             grounded = true

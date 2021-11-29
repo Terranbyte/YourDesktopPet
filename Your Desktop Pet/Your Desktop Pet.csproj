@@ -67,7 +67,8 @@
     <Compile Include="Core\Helpers\DesktopWindows.cs" />
     <Compile Include="Core\Helpers\Log.cs" />
     <Compile Include="Core\Helpers\Time.cs" />
-    <Compile Include="Core\Pet\PetLuaHandler.cs" />
+    <Compile Include="Core\Lua\LuaHelper.cs" />
+    <Compile Include="Core\Lua\PetLuaHandler.cs" />
     <Compile Include="Core\Pet\PetObject.cs" />
     <Compile Include="Forms\ActivePets.cs">
       <SubType>Form</SubType>
@@ -95,14 +96,14 @@
     <EmbeddedResource Include="Forms\ActivePets.resx">
       <DependentUpon>ActivePets.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Lua\PetVariables.lua">
+    <EmbeddedResource Include="LuaScripts\PetVariables.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Lua\LuaOverrideFunctions.lua">
+    <EmbeddedResource Include="LuaScripts\LuaOverrideFunctions.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Lua\test.lua" />
-    <EmbeddedResource Include="Lua\PetAPIFunctions.lua">
+    <EmbeddedResource Include="LuaScripts\test.lua" />
+    <EmbeddedResource Include="LuaScripts\PetAPIFunctions.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />

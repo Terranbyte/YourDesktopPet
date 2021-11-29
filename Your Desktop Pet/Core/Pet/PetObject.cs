@@ -1,4 +1,4 @@
-﻿using NLua;
+﻿using MoonSharp.Interpreter;
 using System;
 using Your_Desktop_Pet.Core.Drawing;
 
@@ -21,7 +21,7 @@ namespace Your_Desktop_Pet.Core.Pet
             private set {  _sprite.shouldExit = value; }
         }
 
-        private PetLuaHandler _luaHandler = null;
+        private Lua.PetLuaHandler _luaHandler = null;
         public Sprite _sprite = null;
         private string _baseDirectory = "";
 
@@ -41,51 +41,47 @@ namespace Your_Desktop_Pet.Core.Pet
             _sprite.offset = (PositionOffset)Enum.Parse(typeof(Core.Drawing.PositionOffset), petFile.IniReadValue("PetSettings", "Offset"));
             _sprite.window.scaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
 
-            _luaHandler = new PetLuaHandler();
+            _luaHandler = new Lua.PetLuaHandler();
 
-            LuaTable petObject = _luaHandler.lua.GetTable("pet");
-            petObject["bounds"] = _sprite.window.Bounds;
-            _luaHandler.lua.SetObjectToPath("pet", petObject);
+            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
+            petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
+            //_luaHandler.lua.SetObjectToPath("pet", petTable);
 
             _sprite.animator = new Animator(ref _sprite.window, _baseDirectory + "\\sprites");
 
             updateInterval = 1.0f / frameCap;
             animationInterval = frameCap / animationFrameRate;
 
-            if (Globals.luaTraceback)
-            {
-                _luaHandler.lua.UseTraceback = true;
-                _luaHandler.lua.SetDebugHook(KeraLua.LuaHookMask.Line, 1);
-                _luaHandler.lua.DebugHook += Lua_DebugHook;
-            }
+            //if (Globals.luaTraceback)
+            //{
+            //    _luaHandler.lua.UseTraceback = true;
+            //    _luaHandler.lua.SetDebugHook(KeraLua.LuaHookMask.Line, 1);
+            //    _luaHandler.lua.DebugHook += Lua_DebugHook;
+            //}
 
             _luaHandler.lua.DoFile(_baseDirectory + @"\Scripts\pet.lua");
-            _luaHandler.lua.GetFunction("_Start").Call();
-            Console.WriteLine((bool)petObject["show"]);
-            if ((bool)petObject["show"])
+            _luaHandler.lua.Call(_luaHandler.lua.Globals["_Start"]);
+
+            if ((bool)petTable["show"])
                 _sprite.Show();
         }
 
         public void Stop()
         {
-            if (Globals.luaTraceback)
-                _luaHandler.lua.RemoveDebugHook();
-
-            _luaHandler.lua.Dispose();
             //_sprite.Stop();
         }
 
         public void Update()
         {
-            LuaTable petObject = _luaHandler.lua.GetTable("pet");
-            petObject["bounds"] = _sprite.window.Bounds;
+            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
+            petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
 
-            _luaHandler.lua.GetFunction("_Update").Call();
-            _luaHandler.lua.GetFunction("_LateUpdate").Call();
+            _luaHandler.lua.Call(_luaHandler.lua.Globals["_Update"]);
+            //_luaHandler.lua.Call(_luaHandler.lua.Globals["_LateUpdate"]);
 
             //Apply changes
 
-            if ((bool)petObject["show"] == true)
+            if ((bool)petTable["show"] == true)
                 _sprite.Show();
             else
                 _sprite.Hide();
@@ -93,9 +89,9 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.shouldHalt)
                 return;
 
-           _sprite.animator.FlipSprite(Convert.ToBoolean(petObject["flipX"]));
+           _sprite.animator.FlipSprite(Convert.ToBoolean(petTable["flipX"]));
 
-            _sprite.SetPosition(Convert.ToSingle(petObject["x"]), Convert.ToSingle(petObject["y"]));
+            _sprite.SetPosition(Convert.ToSingle(petTable["x"]), Convert.ToSingle(petTable["y"]));
         }
 
         public void Draw()
@@ -103,24 +99,24 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.shouldHalt)
                 return;
 
-            LuaTable petObject = _luaHandler.lua.GetTable("pet");
-            
-            _luaHandler.lua.GetFunction("_Draw").Call();
+            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
 
-            string anim = (string)petObject["animation"];
+            _luaHandler.lua.Call(_luaHandler.lua.Globals["_Draw"]);
+
+            string anim = (string)petTable["animation"];
             if (!string.IsNullOrEmpty(anim) && anim != _sprite.animator.currentAnimation)
             {
                 _sprite.animator.ChangeAnimation(anim);
                 // Update position in case the size changed
-                _sprite.SetPosition(Convert.ToSingle(petObject["x"]), Convert.ToSingle(petObject["y"]));
+                _sprite.SetPosition(Convert.ToSingle(petTable["x"]), Convert.ToSingle(petTable["y"]));
             }
 
             _sprite.animator.Tick();
         }
 
-        private void Lua_DebugHook(object sender, NLua.Event.DebugHookEventArgs e)
-        {
-            Helpers.Log.WriteLine("LuaTraceback", _luaHandler.lua.GetDebugTraceback());
-        }
+        //private void Lua_DebugHook(object sender, NLua.Event.DebugHookEventArgs e)
+        //{
+        //    Helpers.Log.WriteLine("LuaTraceback", _luaHandler.lua.GetDebugTraceback());
+        //}
     }
 }

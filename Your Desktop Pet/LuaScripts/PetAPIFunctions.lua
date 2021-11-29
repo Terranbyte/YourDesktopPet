@@ -5,7 +5,7 @@
 end
 
 function isColliding(a, b)
-    if ((b.X >= a.X + a.Width) or (b.X + b.Width <= a.X) or (b.Y >= a.Y + a.Height) or (b.Y + b.Height <= a.Y)) then
+    if ((b.x >= a.x + a.w) or (b.x + b.w <= a.x) or (b.y >= a.y + a.h) or (b.y + b.h <= a.y)) then
         return false 
     else 
         return true
@@ -14,9 +14,9 @@ function isColliding(a, b)
 
 function BoundsFromXYWH(x, y, w, h)
     t = {}
-    t.X = x
-    t.Y = y
-    t.Width = w
-    t.Height = h
+    t.x = x
+    t.y = y
+    t.w = w
+    t.h = h
     return t
 end
