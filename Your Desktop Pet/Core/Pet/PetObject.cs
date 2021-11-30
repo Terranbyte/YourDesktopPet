@@ -21,7 +21,13 @@ namespace Your_Desktop_Pet.Core.Pet
             private set {  _sprite.shouldExit = value; }
         }
 
+        public bool ready
+        {
+            get { return _luaHandler != null && _luaHandler.ready; }
+        }
+
         private Lua.PetLuaHandler _luaHandler = null;
+        private Table _petTable;
         public Sprite _sprite = null;
         private string _baseDirectory = "";
 
@@ -43,8 +49,8 @@ namespace Your_Desktop_Pet.Core.Pet
 
             _luaHandler = new Lua.PetLuaHandler();
 
-            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
-            petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
+            _petTable = _luaHandler.lua.Globals.Get("pet").Table;
+            _petTable["AABB"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
 
             _sprite.animator = new Animator(ref _sprite.window, _baseDirectory + "\\sprites");
 
@@ -54,24 +60,21 @@ namespace Your_Desktop_Pet.Core.Pet
             _luaHandler.lua.DoFile(_baseDirectory + @"\Scripts\pet.lua");
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Start"]);
 
-            if ((bool)petTable["show"])
+            if ((bool)_petTable["show"])
                 _sprite.Show();
-        }
 
-        public void Stop()
-        {
-            //_sprite.Stop();                                                                                
+            _sprite.animator.FlipSprite(Convert.ToBoolean(_petTable["flipX"]));
+            _sprite.SetPosition(Convert.ToSingle(_petTable["x"]), Convert.ToSingle(_petTable["y"]));
         }
 
         public void Update()
         {
-            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
-            petTable["bounds"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
+            _petTable["AABB"] = Lua.LuaHelper.RectToTable(_sprite.window.Bounds, _luaHandler.lua);
 
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Update"]);
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_LateUpdate"]);
 
-            if ((bool)petTable["show"] == true)
+            if ((bool)_petTable["show"] == true)
                 _sprite.Show();
             else
                 _sprite.Hide();
@@ -79,9 +82,8 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.shouldHalt)
                 return;
 
-           _sprite.animator.FlipSprite(Convert.ToBoolean(petTable["flipX"]));
-
-            _sprite.SetPosition(Convert.ToSingle(petTable["x"]), Convert.ToSingle(petTable["y"]));
+            _sprite.animator.FlipSprite(Convert.ToBoolean(_petTable["flipX"]));
+            _sprite.SetPosition(Convert.ToSingle(_petTable["x"]), Convert.ToSingle(_petTable["y"]));
         }
 
         public void Draw()
@@ -89,15 +91,13 @@ namespace Your_Desktop_Pet.Core.Pet
             if (_sprite.shouldHalt)
                 return;
 
-            Table petTable = _luaHandler.lua.Globals.Get("pet").Table;
-
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Draw"]);
 
-            string anim = (string)petTable["animation"];
+            string anim = (string)_petTable["animation"];
             if (!string.IsNullOrEmpty(anim) && anim != _sprite.animator.currentAnimation)
             {
                 _sprite.animator.ChangeAnimation(anim);
-                _sprite.SetPosition(Convert.ToSingle(petTable["x"]), Convert.ToSingle(petTable["y"]));
+                _sprite.SetPosition(Convert.ToSingle(_petTable["x"]), Convert.ToSingle(_petTable["y"]));
             }
 
             _sprite.animator.Tick();

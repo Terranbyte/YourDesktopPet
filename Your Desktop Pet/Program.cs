@@ -22,7 +22,7 @@ namespace Your_Desktop_Pet
             if (!Directory.Exists(Core.Globals.dataPath))
                 Directory.CreateDirectory(Core.Globals.dataPath);
 
-            Application.Run(new Forms.Launcher());
+            Application.Run(Forms.FormManager.Current.CreateForm<Forms.Launcher>());
         }
     }
 }

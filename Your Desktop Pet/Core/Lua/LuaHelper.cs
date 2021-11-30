@@ -48,5 +48,25 @@ namespace Your_Desktop_Pet.Core.Lua
 
             return p;
         }
+
+        public static Table AABBFromXYWH(int x, int y, int w, int h, Script owner)
+        {
+            Rectangle rect = new Rectangle();
+
+            rect.X = x;
+            rect.Y = y;
+            rect.Width = w;
+            rect.Height = h;
+
+            return RectToTable(rect, owner);
+        }
+
+        public static bool AABBColliding(Table a, Table b)
+        {
+            return (double)a["x"] < (double)b["x"] + (double)b["w"] &&
+                    (double)a["x"] + (double)a["w"] > (double)b["x"] &&
+                    (double)a["y"] < (double)b["y"] + (double)b["h"] &&
+                    (double)a["y"] + (double)a["h"] > (double)b["y"];
+        }
     }
 }

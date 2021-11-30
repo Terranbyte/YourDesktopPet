@@ -15,12 +15,12 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         private Image[] _frames;
         private string[] _spriteFiles;
-        private Window.SpriteWindow _window;
+        private Forms.SpriteWindow _window;
         private int _numFrames = 0;
         private int _currentFrame = 0;
         private string _spriteDirectory = "";
 
-        public Animator(ref Window.SpriteWindow window, string spriteDirectory)
+        public Animator(ref Forms.SpriteWindow window, string spriteDirectory)
         {
             _frames = new Image[0];
             _spriteFiles = Directory

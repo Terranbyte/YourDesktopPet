@@ -2,6 +2,7 @@
 using MoonSharp.Interpreter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -16,6 +17,7 @@ namespace Your_Desktop_Pet.Core.Lua
     class PetLuaHandler
     {
         public Script lua;
+        internal bool ready;
 
         public PetLuaHandler()
         {
@@ -30,6 +32,8 @@ namespace Your_Desktop_Pet.Core.Lua
             Helpers.Log.WriteLine("LuaHandler", "Populating variables...");
             PopulateVariables();
             Helpers.Log.WriteLine("LuaHandler", "Done!");
+
+            ready = true;
         }
 
         private void CreateVariables()
@@ -42,21 +46,32 @@ namespace Your_Desktop_Pet.Core.Lua
 
         private void RegisterFunctions()
         {
-            lua.DoFile("LuaScripts/LuaOverrideFunctions.lua");
-            lua.DoFile("LuaScripts/PetAPIFunctions.lua");
+            //lua.DoFile("LuaScripts/PetAPIFunctions.lua");
 
             lua.Globals["_Print"] = (Action<string, object>)Helpers.Log.WriteLine;
+
             lua.Globals["_GetDesktopBounds"] = (Func<Table>)GetDesktopBounds;
             lua.Globals["_GetWindows"] = (Func<bool, bool, Table>)GetWindows;
-            lua.Globals["_tableLength"] = (Func<Table, int>)GetTableLength;
+            lua.Globals["_TableLength"] = (Func<Table, int>)GetTableLength;
+            lua.Globals["_AABBFromXYWH"] = (Func<int, int, int, int, Table>)AABBFromXYWH;
+            lua.Globals["_IsCollidingAABB"] = (Func<Table, Table, bool>)LuaHelper.AABBColliding;
+
             lua.Globals["_ReadValue"] = (Func<string, object>)API.SaveData.ReadValue;
             lua.Globals["_SaveValue"] = (Action<string, object>)API.SaveData.WriteValue;
+
             lua.Globals["_GetMousePos"] = (Func<Point>)API.Input.InputProvider.GetMousePos;
             lua.Globals["_MouseButtonDown"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonDown;
             lua.Globals["_MouseButtonUp"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonUp;
             lua.Globals["_IsKeyDown"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyDown;
             lua.Globals["_IsKeyHeld"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyHeld;
             //lua.Globals["_IsKeyUp"] = (Func<string, bool>)API.Input.InputProvider.IsKeyUp;
+
+            lua.DoFile("LuaScripts/LuaOverrideFunctions.lua");
+        }
+
+        private Table AABBFromXYWH(int x, int y, int w, int h)
+        {
+            return LuaHelper.AABBFromXYWH(x, y, w, h, lua);
         }
 
         private void PopulateVariables()
@@ -68,7 +83,7 @@ namespace Your_Desktop_Pet.Core.Lua
 
             petTable["x"] = 10;
             petTable["y"] = 0;
-            petTable["bounds"] = LuaHelper.RectToTable(Rectangle.FromLTRB(0, 0, 0, 0), lua);
+            petTable["AABB"] = LuaHelper.RectToTable(Rectangle.FromLTRB(0, 0, 0, 0), lua);
             petTable["animation"] = "";
             petTable["show"] = true;
             petTable["flipX"] = false;
@@ -91,7 +106,7 @@ namespace Your_Desktop_Pet.Core.Lua
             {
                 window = new Table(lua);
                 window["name"] = windows[i].Key;
-                window["bounds"] = LuaHelper.RectToTable(windows[i].Value, lua);
+                window["AABB"] = LuaHelper.RectToTable(windows[i].Value, lua);
                 windowsTable.Set(DynValue.NewNumber(i), DynValue.NewTable(window));
             }
             

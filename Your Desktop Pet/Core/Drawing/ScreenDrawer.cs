@@ -11,7 +11,7 @@ namespace Your_Desktop_Pet.Core.Drawing
     static class ScreenDrawer
     {
         private static Graphics _g;
-        private static IntPtr desktopDC = IntPtr.Zero;
+        private static IntPtr _desktopDC = IntPtr.Zero;
 
         [DllImport("User32.dll")]
         private static extern IntPtr GetDC(IntPtr hwnd);
@@ -21,23 +21,27 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public static void Instantiate()
         {
-            
+            _desktopDC = GetDC(IntPtr.Zero);
+            _g = Graphics.FromHdc(_desktopDC);
         }
 
         public static void Dispose()
         {
-            
+            _g.Dispose();
+            ReleaseDC(_desktopDC);
         }
 
         public static void Draw()
         {
-            desktopDC = GetDC(IntPtr.Zero);
-            _g = Graphics.FromHdc(desktopDC);
+            KeyValuePair<string, Rectangle>[] windows = Helpers.DesktopWindows.GetAllWindowBounds(false, false);
 
-            _g.FillRectangle(new SolidBrush(Color.White), new Rectangle(0, 0, 64, 64));
+            Pen p = new Pen(Color.Red);
 
-            _g.Dispose();
-            ReleaseDC(desktopDC);
+            foreach (KeyValuePair<string, Rectangle> window in windows)
+            {
+                _g.DrawRectangle(p, window.Value);
+            }
+
         }
     }
 }

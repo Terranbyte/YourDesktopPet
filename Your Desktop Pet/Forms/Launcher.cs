@@ -45,7 +45,7 @@ namespace Your_Desktop_Pet.Forms
 
             GetPetList();
 
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 15; i++)
             {
                 fpsSamples.Enqueue(1f / 60f);
             }
@@ -163,9 +163,8 @@ namespace Your_Desktop_Pet.Forms
         private void SpawnPet(string petPath)
         {
             if (pet != null)
-                pet.Stop();
+                pet = null;
 
-            Console.WriteLine("Test");
             pet = new Core.Pet.PetObject(petPath);
             pet.Start();
         }
@@ -267,6 +266,7 @@ namespace Your_Desktop_Pet.Forms
 
         private void Launcher_FormClosing(object sender, FormClosingEventArgs e)
         {
+            pet = null;
             Core.Helpers.Log.WriteLine("Main", "Debug end");
             Core.Helpers.Log.Destroy();
             Environment.Exit(0);
@@ -280,34 +280,35 @@ namespace Your_Desktop_Pet.Forms
             fpsSamples.Dequeue();
             fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
 
-            Console.Title = $"FPS: {1f / fpsSamples.Average()}";
+            //Console.Title = $"FPS: {Math.Round(1f / fpsSamples.Average())}";
+            Console.Title = Core.Helpers.Time.deltaTime.ToString();
 
-            if (pet == null)
-                return;
-
-            if (pet.shouldExit)
+            if (pet != null && pet.ready)
             {
-                pet.Stop();
-                pet = null;
+                if (pet.shouldExit)
+                {
+                    pet = null;
+                    return;
+                }
+
+
+                pet.currentTime += Core.Helpers.Time.deltaTime;
+                pet.totalTime += Core.Helpers.Time.deltaTime;
+
+                if (pet.currentTime < pet.updateInterval)
+                    return;
+
+                pet.animationTime += 1;
+                pet.Update();
+
+                if (pet.animationTime >= pet.animationInterval)
+                {
+                    pet.Draw();
+                    pet.animationTime -= pet.animationInterval;
+                }
+
+                pet.currentTime -= pet.updateInterval;
             }
-
-
-            pet.currentTime += Core.Helpers.Time.deltaTime;
-            pet.totalTime += Core.Helpers.Time.deltaTime;
-
-            if (pet.currentTime < pet.updateInterval)
-                return;
-
-            pet.animationTime += 1;
-            pet.Update();
-
-            if (pet.animationTime >= pet.animationInterval)
-            {
-                pet.Draw();
-                pet.animationTime -= pet.animationInterval;
-            }
-
-            pet.currentTime -= pet.updateInterval;
         }
     }
 }

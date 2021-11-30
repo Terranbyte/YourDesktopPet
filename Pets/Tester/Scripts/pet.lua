@@ -41,13 +41,8 @@ function _Update()
     end
 end
 
-function test()
-    print("This is a test")
-end
-
 function _LateUpdate()
     windows = _GetWindows(false, true)
-    -- windows = {}
 
     yVelocity = yVelocity + baseGravity
     grounded = false
@@ -56,33 +51,23 @@ function _LateUpdate()
         yVelocity = yMaxVelocity
     end
 
-    -- check window collisions
-    for k, v in pairs(windows) do
-        -- adjusted pet bounds
-        --ab = BoundsFromXYWH(pet.bounds.x + 52, pet.y - 20, pet.bounds.w - 128, 20)
-        -- projected pet bounds
-        pb = BoundsFromXYWH(pet.bounds.x + 52, pet.y - 20, pet.bounds.w - 128, 20 + yVelocity)
-        
-        wb = BoundsFromXYWH(v.bounds.x, v.bounds.y, v.bounds.w, 20)
-        -- if i == 0 then
-        --     print(windows[i].name)
-        --     print(ab.x .. " " .. ab.y .. " " .. ab.w .. " " .. ab.h)
-        --     print(wb.x .. " " .. wb.y .. " " .. wb.w .. " " .. wb.h)
-        -- end
-
-        -- check projected and current bounds against the window bounds
-        if IsColliding(pb, wb) and yVelocity >= 0 then
-            pet.y = wb.y
-            yVelocity = 0
-            grounded = true
-        end
-    end
-    
     -- check ground collision
     if pet.y >= desktopHeight then
         pet.y = desktopHeight
         yVelocity = 0
         grounded = true
+    end
+
+    -- check window collisions
+    for k, v in pairs(windows) do
+        pb = _AABBFromXYWH(pet.AABB.x + 52, pet.y - 20, pet.AABB.w - 128, 20 + yVelocity)
+        wb = _AABBFromXYWH(v.AABB.x, v.AABB.y, v.AABB.w, 20)
+        
+        if _IsCollidingAABB(pb, wb) and yVelocity >= 0 then
+            pet.y = wb.y + 1
+            yVelocity = 0
+            grounded = true
+        end
     end
 
     if grounded and jump then

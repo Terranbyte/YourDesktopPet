@@ -6,7 +6,7 @@ using System.Numerics;
 using System.Windows.Forms;
 using System.Windows.Input;
 
-namespace Your_Desktop_Pet.Core.Window
+namespace Your_Desktop_Pet.Forms
 {
     class SpriteWindow : Form
     {
