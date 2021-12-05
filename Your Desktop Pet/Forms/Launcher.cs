@@ -45,7 +45,7 @@ namespace Your_Desktop_Pet.Forms
 
             GetPetList();
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 5; i++)
             {
                 fpsSamples.Enqueue(1f / 60f);
             }
@@ -163,7 +163,10 @@ namespace Your_Desktop_Pet.Forms
         private void SpawnPet(string petPath)
         {
             if (pet != null)
+            {
+                pet.Stop();
                 pet = null;
+            }
 
             pet = new Core.Pet.PetObject(petPath);
             pet.Start();
@@ -266,10 +269,14 @@ namespace Your_Desktop_Pet.Forms
 
         private void Launcher_FormClosing(object sender, FormClosingEventArgs e)
         {
-            pet = null;
+            if (pet != null)
+            {
+                pet.Stop();
+                pet = null;
+            }
+
             Core.Helpers.Log.WriteLine("Main", "Debug end");
             Core.Helpers.Log.Destroy();
-            Environment.Exit(0);
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -280,8 +287,8 @@ namespace Your_Desktop_Pet.Forms
             fpsSamples.Dequeue();
             fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
 
-            //Console.Title = $"FPS: {Math.Round(1f / fpsSamples.Average())}";
-            Console.Title = Core.Helpers.Time.deltaTime.ToString();
+            Console.Title = $"FPS: {Math.Round(1f / fpsSamples.Average())}";
+            //Console.Title = Core.Helpers.Time.deltaTime.ToString();
 
             if (pet != null && pet.ready)
             {

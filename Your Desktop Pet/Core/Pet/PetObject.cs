@@ -102,5 +102,10 @@ namespace Your_Desktop_Pet.Core.Pet
 
             _sprite.animator.Tick();
         }
+
+        public void Stop()
+        {
+            _sprite.window.Close();
+        }
     }
 }
