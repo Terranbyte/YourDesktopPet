@@ -41,26 +41,6 @@ namespace Your_Desktop_Pet.Core.Drawing
             _window.Dispose();
         }
 
-        private void SplitFrames(Image source, int total, int width, int height)
-        {
-            for (int i = 0; i < _frames.Length; i++)
-            {
-                // Dispose all old frames to avoid a memory leak
-                _frames[i].Dispose();
-            }
-
-            _frames = new Image[total];
-            for (int i = 0; i < total; i++)
-            {
-                _frames[i] = new Bitmap(width, height);
-
-                Graphics graphics = Graphics.FromImage(_frames[i]);
-                graphics.InterpolationMode = _window.InterpolationMode;
-                graphics.DrawImage(source, new Rectangle(0, 0, width, height), new Rectangle(i * width, 0, width, height), GraphicsUnit.Pixel);
-                graphics.Dispose();
-            }
-        }
-
         public void FlipSprite(bool flipX)
         {
             if (this.flipX == flipX)
@@ -97,7 +77,12 @@ namespace Your_Desktop_Pet.Core.Drawing
             currentAnimation = animation;
             _currentFrame = 0;
 
-            SplitFrames(source, _numFrames, source.Width / _numFrames, source.Height);
+            for (int i = 0; i < _frames.Length; i++)
+            {
+                _frames[i].Dispose();
+            }
+
+            _frames = SpriteSheetHelper.GetSpriteSheetSprites(source, _numFrames, _window.InterpolationMode);
 
             if (flipX)
             {

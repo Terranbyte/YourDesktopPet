@@ -10,49 +10,22 @@ using System.Windows.Forms;
 
 namespace Your_Desktop_Pet.Core.Drawing
 {
-    enum PositionOffset
-    {
-        TopLeft = 0,
-        Top = 1,
-        TopRight = 2,
-        Right = 3,
-        BottomRight = 4,
-        Bottom = 5,
-        BottomLeft = 6,
-        Left = 7,
-        Center = 8,
-    }
-
-    class Sprite
+    class Sprite : Pet.LuaObject
     {
         public Forms.SpriteWindow window = null;
-        public PositionOffset offset = PositionOffset.TopLeft;
-        public Animator animator;
         public bool shouldExit = false;
 
+        private string _spriteDirectory = "";
         public bool shouldHalt { get { return !_shown; } private set { } }
-
         private bool _shown = true;
 
-        private readonly KeyValuePair<float, float>[] _offsetLUT = new KeyValuePair<float, float>[9]
-        {
-            new KeyValuePair<float, float>(0f, 0f),
-            new KeyValuePair<float, float>(0.5f, 0f),
-            new KeyValuePair<float, float>(1f, 0f),
-            new KeyValuePair<float, float>(1f, 0.5f),
-            new KeyValuePair<float, float>(1f, 1f),
-            new KeyValuePair<float, float>(0.5f, 1f),
-            new KeyValuePair<float, float>(0f, 1f),
-            new KeyValuePair<float, float>(0f, 0.5f),
-            new KeyValuePair<float, float>(0.5f, 0.5f)
-        };
-
-        public Sprite(string spriteDirectory, PositionOffset offset = PositionOffset.TopLeft)
+        public Sprite(string spriteDirectory, Pet.AnchorPoint anchor = Pet.AnchorPoint.TopLeft) : base("New Object", Vector2.Zero, Pet.AnchorPoint.TopLeft)
         {
             window = Forms.FormManager.Current.CreateForm<Forms.SpriteWindow>();
             window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
             window.Hide();
-            this.offset = offset;
+            _position = new Vector2(window.Left, window.Top);
+            _size = new Vector2(window.Right, window.Bottom);
 
             //_spriteThread = new Thread(new ThreadStart(() =>
             //{
@@ -64,9 +37,25 @@ namespace Your_Desktop_Pet.Core.Drawing
             Hide();
         }
 
-        ~Sprite()
+        public Sprite(string spriteDirectory, string defaultSprite, Pet.AnchorPoint anchor = Pet.AnchorPoint.TopLeft) : base("New Object", Vector2.Zero, Pet.AnchorPoint.TopLeft)
         {
+            _spriteDirectory = spriteDirectory;
 
+            window = Forms.FormManager.Current.CreateForm<Forms.SpriteWindow>();
+            window.FormClosed += new FormClosedEventHandler((object sender, FormClosedEventArgs e) => shouldExit = true);
+            window.Hide();
+
+            SetPosition(window.Left, window.Top);
+            SetSprite(defaultSprite);
+
+            //_spriteThread = new Thread(new ThreadStart(() =>
+            //{
+            //    window.ShowDialog();
+            //}));
+            //_spriteThread.SetApartmentState(ApartmentState.STA);
+            //_spriteThread.Start();
+
+            Hide();
         }
 
         public void Show()
@@ -87,20 +76,25 @@ namespace Your_Desktop_Pet.Core.Drawing
             _shown = false;
         }
 
-        public void SetPosition(float x, float y)
+        public override void SetPosition(float x, float y)
         {
-            KeyValuePair<float, float> o = _offsetLUT[(int)offset];
-
-            window.Left = (int)Math.Round(x - (window.Width * o.Key));
-            window.Top = (int)Math.Round(y - (window.Height * o.Value));
+            base.SetPosition(x, y);
+            window.Left = (int)_position.X;
+            window.Top = (int)_position.Y;
         }
 
-        public void SetPosition(float x, float y, PositionOffset overrideOffset)
+        public override void SetPosition(float x, float y, Pet.AnchorPoint overrideOffset)
         {
-            KeyValuePair<float, float> offset = _offsetLUT[(int)overrideOffset];
+            base.SetPosition((float)x, (float)y, overrideOffset);
+            window.ChangeSize((int)_size.X, (int)_size.Y);
+        }
 
-            window.Left = (int)Math.Round(x - (window.Width * offset.Key));
-            window.Top = (int)Math.Round(y - (window.Height * offset.Value));
+        public void SetSprite(string spriteName)
+        {
+            string[] temp = spriteName.Split('_', '.');
+            window.BackgroundImage.Dispose();
+            Image temp2 = SpriteSheetHelper.GetSpriteFromSpriteSheet(_spriteDirectory + "\\" + spriteName, Convert.ToInt32(temp[temp.Length - 2]), 0, window.InterpolationMode);
+            window.BackgroundImage = temp2;
         }
     }
 }

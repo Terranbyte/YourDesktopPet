@@ -57,17 +57,8 @@ namespace Your_Desktop_Pet.Forms
 
         public void ChangeSize(float width, int height)
         {
-
-            if (InvokeRequired)
-            {
-                Action safeInvoke = delegate { ChangeSize(width, height); };
-                Invoke(safeInvoke);
-            }
-            else
-            {
-                Size = new Size((int)(width * scaleFactor), (int)(height * scaleFactor));
-                BackgroundImage = new Bitmap(Size.Width, Size.Height);
-            }
+            Size = new Size((int)(width * scaleFactor), (int)(height * scaleFactor));
+            BackgroundImage = new Bitmap(Size.Width, Size.Height);
         }
 
         private void InitializeComponent()
