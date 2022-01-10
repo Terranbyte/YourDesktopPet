@@ -213,7 +213,7 @@ namespace Your_Desktop_Pet.Forms
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Title = "Add new pet";
-                dialog.Filter = "Pet archive (*.pet)|*.pet";
+                dialog.Filter = "Pet archive (*.pet)|*.pet|Zip archive(*.zip)|*.zip";
                 dialog.RestoreDirectory = true;
 
                 DialogResult result = dialog.ShowDialog();
@@ -249,22 +249,22 @@ namespace Your_Desktop_Pet.Forms
 
         private void btn_details_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btn_options_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btn_sdk_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btn_activePets_Click(object sender, EventArgs e)
         {
-            
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Launcher_FormClosing(object sender, FormClosingEventArgs e)
