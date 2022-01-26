@@ -20,7 +20,8 @@ namespace Your_Desktop_Pet.Core.Pet
         Center = 8,
     }
 
-    public class LuaObject
+    public class 
+
     {
         public string name;
         public AnchorPoint anchor = AnchorPoint.TopLeft;
