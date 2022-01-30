@@ -39,14 +39,18 @@ namespace Your_Desktop_Pet.Forms
             this.btn_details = new System.Windows.Forms.Button();
             this.btn_activePets = new System.Windows.Forms.Button();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.icon = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // list_petList
             // 
             this.list_petList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.list_petList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.icon});
             this.list_petList.HideSelection = false;
             this.list_petList.Location = new System.Drawing.Point(12, 89);
+            this.list_petList.MultiSelect = false;
             this.list_petList.Name = "list_petList";
             this.list_petList.Size = new System.Drawing.Size(306, 386);
             this.list_petList.TabIndex = 1;
@@ -163,5 +167,6 @@ namespace Your_Desktop_Pet.Forms
         private System.Windows.Forms.Button btn_details;
         private System.Windows.Forms.Button btn_activePets;
         private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.ColumnHeader icon;
     }
 }

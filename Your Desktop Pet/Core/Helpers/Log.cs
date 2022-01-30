@@ -10,6 +10,8 @@ namespace Your_Desktop_Pet.Core.Helpers
 {
     static class Log
     {
+        public static int IndentationLevel = 0;
+
         public static void Create()
         {
             if (Globals.debugMode)
@@ -34,10 +36,12 @@ namespace Your_Desktop_Pet.Core.Helpers
                 msg = "null";
 
             if (Globals.debugMode)
-                Console.WriteLine($"[{debugSignature}({DateTime.Now.ToString()})] {msg.ToString()}");
+            {
+                Console.WriteLine($"[{debugSignature}({DateTime.Now.ToString()})]{"".PadLeft(IndentationLevel, '\t')} {msg.ToString()}");
+            }
             else
             {
-                Trace.WriteLine($"[{debugSignature}({DateTime.Now.ToString()})] {msg.ToString()}");
+                Trace.WriteLine($"[{debugSignature}({DateTime.Now.ToString()})]{"".PadLeft(IndentationLevel, '\t')} {msg.ToString()}");
                 //Trace.Flush();
             }
         }

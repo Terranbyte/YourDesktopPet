@@ -1,5 +1,7 @@
 ﻿using MoonSharp.Interpreter;
+using MoonSharp.RemoteDebugger;
 using System;
+using System.Diagnostics;
 using Your_Desktop_Pet.Core.Drawing;
 
 namespace Your_Desktop_Pet.Core.Pet
@@ -20,6 +22,7 @@ namespace Your_Desktop_Pet.Core.Pet
             get { return _luaHandler != null && _luaHandler.ready; }
         }
 
+        private RemoteDebuggerService remoteDebugger;
         private Lua.PetLuaHandler _luaHandler = null;
         private Animator _animator = null;
         private Table _petTable = null;
@@ -35,20 +38,26 @@ namespace Your_Desktop_Pet.Core.Pet
         {
             Ini.IniFile petFile = new Ini.IniFile(_baseDirectory + "\\pet.ini");
 
-            name = petFile.IniReadValue("PetInfo", "Name");
-            SetSprite(petFile.IniReadValue("PetSettings", "DefaultSprite"));
-
             frameCap = Convert.ToSingle(petFile.IniReadValue("PetSettings", "UpdateCallInterval"));
             animationFrameRate = Convert.ToSingle(petFile.IniReadValue("PetSettings", "AnimationFrameRate"));
             anchor = (AnchorPoint)Enum.Parse(typeof(AnchorPoint), petFile.IniReadValue("PetSettings", "Anchor"));
             window.scaleFactor = Convert.ToSingle(petFile.IniReadValue("PetSettings", "SpriteScaleFactor"));
 
+            name = petFile.IniReadValue("PetInfo", "Name");
+            SetSprite(petFile.IniReadValue("PetSettings", "DefaultSprite"));
+
             _luaHandler = new Lua.PetLuaHandler();
+
+            if (Globals.luaTraceback)
+            {
+                _luaHandler.lua.DebuggerEnabled = true;
+                ActivateRemoteDebugger(_luaHandler.lua);
+            }
 
             _petTable = _luaHandler.lua.Globals.Get("pet").Table;
             _petTable["AABB"] = Lua.LuaHelper.RectToTable(window.Bounds, _luaHandler.lua);
 
-            _animator = new Animator(ref window, _baseDirectory + "\\sprites");
+            _animator = new Animator(this, _baseDirectory + "\\sprites");
 
             updateInterval = 1.0f / frameCap;
             animationInterval = frameCap / animationFrameRate;
@@ -65,6 +74,9 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Update()
         {
+            if (!_luaHandler.ready || _petTable == null)
+                return;
+
             _petTable["AABB"] = Lua.LuaHelper.RectToTable(window.Bounds, _luaHandler.lua);
 
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Update"]);
@@ -84,7 +96,7 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void Draw()
         {
-            if (shouldHalt)
+            if (shouldHalt || !_luaHandler.ready)
                 return;
 
             _luaHandler.lua.Call(_luaHandler.lua.Globals["_Draw"]);
@@ -99,9 +111,29 @@ namespace Your_Desktop_Pet.Core.Pet
             _animator.Tick();
         }
 
+        private void ActivateRemoteDebugger(Script script)
+        {
+            if (remoteDebugger == null)
+            {
+                remoteDebugger = new RemoteDebuggerService();
+
+                remoteDebugger.Attach(script, "Description of the script", false);
+            }
+
+            Process.Start(remoteDebugger.HttpUrlStringLocalHost);
+        }
+
         public void Stop()
         {
             window.Close();
+        }
+
+        public override void Dispose()
+        {
+            _animator = null;
+            window.Dispose();
+
+            base.Dispose();
         }
     }
 }

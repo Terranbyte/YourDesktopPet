@@ -13,20 +13,8 @@ C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Des
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Desktop Pet.exe
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Desktop Pet.pdb
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.GenerateResource.cache
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\lua54.dll
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\liblua54.dylib
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\x86\lua54.dll
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\x64\lua54.dll
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\x64\liblua54.so
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\KeraLua.dll
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\NLua.dll
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\KeraLua.xml
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.Launcher.resources
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\Lua\PetVariables.lua
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\Lua\LuaOverrideFunctions.lua
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Core.Window.SpriteWindow.resources
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\settings.ini
-C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\Lua\PetAPIFunctions.lua
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\settings.ini
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\Your Desktop Pet.exe.config
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\Your Desktop Pet.exe
@@ -54,3 +42,14 @@ C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\MoonShar
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\MoonSharp.Interpreter.pdb
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\bin\Debug\MoonSharp.Interpreter.xml
 C:\Users\fredrik.nikielhard\source\repos\ydp\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.SpriteWindow.resources
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\LuaScripts\LuaOverrideFunctions.lua
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\LuaScripts\PetAPIFunctions.lua
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.Interpreter.dll
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.Interpreter.pdb
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.Interpreter.xml
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.ActivePets.resources
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.SpriteWindow.resources
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Desktop Pet.csproj.CopyComplete
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.PetDetails.resources
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.RemoteDebugger.dll
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.RemoteDebugger.pdb

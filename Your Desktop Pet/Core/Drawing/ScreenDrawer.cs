@@ -1,47 +1,66 @@
-﻿using System;
+﻿using MoonSharp.Interpreter;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Your_Desktop_Pet.Core.Lua;
 
 namespace Your_Desktop_Pet.Core.Drawing
 {
     static class ScreenDrawer
     {
-        private static Graphics _g;
-        private static IntPtr _desktopDC = IntPtr.Zero;
+        private static IntPtr _hdc;
+        private static Graphics g;
 
-        [DllImport("User32.dll")]
-        private static extern IntPtr GetDC(IntPtr hwnd);
+        private const int DCX_WINDOW = 0x00000001;
+        private const int DCX_CACHE = 0x00000002;
+        private const int DCX_LOCKWINDOWUPDATE = 0x00000400;
 
-        [DllImport("User32.dll")]
-        private static extern void ReleaseDC(IntPtr dc);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDesktopWindow();
 
-        public static void Instantiate()
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDCEx(IntPtr hwnd, IntPtr hrgn, uint flags);
+
+        public static void InitDraw()
         {
-            _desktopDC = GetDC(IntPtr.Zero);
-            _g = Graphics.FromHdc(_desktopDC);
+            _hdc = GetDCEx(GetDesktopWindow(),
+                                 IntPtr.Zero,
+                                 DCX_WINDOW | DCX_CACHE | DCX_LOCKWINDOWUPDATE);
+
+            g = Graphics.FromHdc(_hdc);
         }
 
-        public static void Dispose()
+        public static void DrawRectangleWireframe(Table rect, Table color)
         {
-            _g.Dispose();
-            ReleaseDC(_desktopDC);
+            g.DrawRectangle(new Pen(LuaHelper.TableToRGB(color)), LuaHelper.TableToRect(rect));
         }
 
-        public static void Draw()
+        public static void DrawRectangle(Table rect, Table color)
         {
-            KeyValuePair<string, Rectangle>[] windows = Helpers.DesktopWindows.GetAllWindowBounds(false, false);
+            g.FillRectangle(new SolidBrush(LuaHelper.TableToRGB(color)), LuaHelper.TableToRect(rect));
+        }
 
-            Pen p = new Pen(Color.Red);
+        public static void DrawEllipseWireframe(Table circle, Table color)
+        {
+            g.DrawEllipse(new Pen(LuaHelper.TableToRGB(color)), LuaHelper.TableToRect(circle));
+        }
 
-            foreach (KeyValuePair<string, Rectangle> window in windows)
+        public static void DrawCircle(Table circle, Table color)
+        {
+            g.FillEllipse(new SolidBrush(LuaHelper.TableToRGB(color)), LuaHelper.CircleToRect(LuaHelper.TableToRect(circle)));
+        }
+
+        public static void TerminateDraw()
+        {
+            if (_hdc != IntPtr.Zero)
             {
-                _g.DrawRectangle(p, window.Value);
+                g.Dispose();
+                _hdc = IntPtr.Zero;
             }
-
         }
     }
 }

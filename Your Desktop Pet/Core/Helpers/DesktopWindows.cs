@@ -99,10 +99,10 @@ namespace Your_Desktop_Pet.Core.Helpers
                 info.cbSize = (uint)Marshal.SizeOf(info);
                 GetWindowInfo(hWnd, ref info);
 
-                if ((rmm && (info.dwStyle & WS_MAXIMIZE) == WS_MAXIMIZE) || (info.dwStyle & WS_MINIMIZE) == WS_MINIMIZE)
+                if (rmo && (info.dwStyle & WS_MAXIMIZE) != WS_MAXIMIZE && External.Window.IsOverlapping(hWnd, info))
                     return true;
 
-                if (rmo && (info.dwStyle & WS_MAXIMIZE) != WS_MAXIMIZE && External.Window.IsOverlapped(hWnd))
+                if ((rmm && (info.dwStyle & WS_MAXIMIZE) == WS_MAXIMIZE) || (info.dwStyle & WS_MINIMIZE) == WS_MINIMIZE)
                     return true;
 
                 RectInt r = new RectInt();
@@ -158,10 +158,30 @@ namespace Your_Desktop_Pet.Core.Helpers
             bool ok = _EnumDesktopWindows(hDesktop, EnumWindowsProc, IntPtr.Zero);
 
             if (ok)
+            {
+                string a = "Include Overlap";
+                string b = "Include Maximized";
+
+                if (removeOverlap)
+                    a = "Remove Overlap";
+                if (removeMaximize)
+                    b = "Remove Maximized";
+
+                Log.WriteLine("PetAPI", $"Visible windows ({a}, {b}):");
+                Log.IndentationLevel += 1;
+
+                foreach (KeyValuePair<string, Rectangle> kvPair in bounds)
+                {
+                    Log.WriteLine("PetAPI", $"{kvPair.Key}: {kvPair.Value}");
+                }
+
+                Log.IndentationLevel -= 1;
+
                 return bounds.ToArray();
+            }
             else
             {
-                Helpers.Log.WriteLine("PetAPI", "Error! Couldn't retrie window bounds.");
+                Log.WriteLine("PetAPI", "Error! Couldn't retrie window bounds.");
                 return new KeyValuePair<string, Rectangle>[0];
             }
         }

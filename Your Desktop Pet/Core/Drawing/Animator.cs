@@ -14,20 +14,20 @@ namespace Your_Desktop_Pet.Core.Drawing
         public string currentAnimation = "";
 
         private Image[] _frames;
+        private Sprite _sprite;
         private string[] _spriteFiles;
-        private Forms.SpriteWindow _window;
         private int _numFrames = 0;
         private int _currentFrame = 0;
         private string _spriteDirectory = "";
 
-        public Animator(ref Forms.SpriteWindow window, string spriteDirectory)
+        public Animator(Sprite sprite, string spriteDirectory)
         {
             _frames = new Image[0];
             _spriteFiles = Directory
                 .EnumerateFiles(spriteDirectory, "*", SearchOption.TopDirectoryOnly)
                 .Select(Path.GetFileName)
                 .ToArray();
-            _window = window;
+            _sprite = sprite;
             _spriteDirectory = spriteDirectory;
         }
 
@@ -38,7 +38,7 @@ namespace Your_Desktop_Pet.Core.Drawing
                 _frames[i].Dispose();
             }
 
-            _window.Dispose();
+            _sprite.Dispose();
         }
 
         public void FlipSprite(bool flipX)
@@ -51,7 +51,7 @@ namespace Your_Desktop_Pet.Core.Drawing
             {
                 image.RotateFlip(RotateFlipType.RotateNoneFlipX);
             }
-            _window.Invalidate();
+            _sprite.window.Invalidate();
         }
 
         public void ChangeAnimation(string animation)
@@ -71,8 +71,8 @@ namespace Your_Desktop_Pet.Core.Drawing
 
             string[] temp = animationName.Split('_', '.');
             _numFrames = Convert.ToInt32(temp[temp.Length - 2]);
-            _window.BackgroundImage.Dispose();
-            _window.ChangeSize(source.Width / _numFrames, source.Height);
+            _sprite.window.BackgroundImage.Dispose();
+            _sprite.window.ChangeSize(source.Width / _numFrames, source.Height);
 
             currentAnimation = animation;
             _currentFrame = 0;
@@ -82,7 +82,7 @@ namespace Your_Desktop_Pet.Core.Drawing
                 _frames[i].Dispose();
             }
 
-            _frames = SpriteSheetHelper.GetSpriteSheetSprites(source, _numFrames, _window.InterpolationMode);
+            _frames = Helpers.SpriteSheetHelper.GetSpriteSheetSprites(source, _numFrames, _sprite.window.InterpolationMode);
 
             if (flipX)
             {
@@ -96,7 +96,7 @@ namespace Your_Desktop_Pet.Core.Drawing
         public void Tick()
         {
             _currentFrame = (_currentFrame + 1) % _numFrames;
-            _window.BackgroundImage = _frames[_currentFrame];
+            _sprite.SetSprite(_frames[_currentFrame]);
         }
     }
 }

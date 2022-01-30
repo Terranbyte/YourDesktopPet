@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace Your_Desktop_Pet.Core.Drawing
 {
-    class Sprite : Pet.LuaObject
+    class Sprite : Core.Pet.LuaObject
     {
         public Forms.SpriteWindow window = null;
         public bool shouldExit = false;
+        public bool shouldHalt { get { return !_shown; } private set { } }
 
         private string _spriteDirectory = "";
-        public bool shouldHalt { get { return !_shown; } private set { } }
         private bool _shown = true;
 
         public Sprite(string spriteDirectory, Pet.AnchorPoint anchor = Pet.AnchorPoint.TopLeft) : base("New Object", Vector2.Zero, Pet.AnchorPoint.TopLeft)
@@ -92,9 +92,17 @@ namespace Your_Desktop_Pet.Core.Drawing
         public void SetSprite(string spriteName)
         {
             string[] temp = spriteName.Split('_', '.');
-            window.BackgroundImage.Dispose();
-            Image temp2 = SpriteSheetHelper.GetSpriteFromSpriteSheet(_spriteDirectory + "\\" + spriteName, Convert.ToInt32(temp[temp.Length - 2]), 0, window.InterpolationMode);
+
+            Image temp2 = Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(_spriteDirectory + "\\" + spriteName, Convert.ToInt32(temp[temp.Length - 2]), 0, window.InterpolationMode);
             window.BackgroundImage = temp2;
+
+            _size = new Vector2(temp2.Size.Width * window.scaleFactor, temp2.Size.Height * window.scaleFactor);
+        }
+
+        public void SetSprite(Image sprite)
+        {
+            window.BackgroundImage = sprite;
+            _size = new Vector2(sprite.Size.Width * window.scaleFactor, sprite.Size.Height * window.scaleFactor);
         }
     }
 }

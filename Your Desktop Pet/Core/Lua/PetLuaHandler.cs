@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Your_Desktop_Pet.Core.Drawing;
 
 namespace Your_Desktop_Pet.Core.Lua
 {
@@ -38,8 +39,6 @@ namespace Your_Desktop_Pet.Core.Lua
 
         private void CreateVariables()
         {
-            lua.DoFile("LuaScripts/PetVariables.lua");
-
             UserData.RegisterType<API.Input.VirtualKey>();
             lua.Globals["virtualKey"] = UserData.CreateStatic<API.Input.VirtualKey>();
         }
@@ -50,21 +49,26 @@ namespace Your_Desktop_Pet.Core.Lua
 
             lua.Globals["_Print"] = (Action<string, object>)Helpers.Log.WriteLine;
 
-            lua.Globals["_GetDesktopBounds"] = (Func<Table>)GetDesktopBounds;
-            lua.Globals["_GetWindows"] = (Func<bool, bool, Table>)GetWindows;
-            lua.Globals["_TableLength"] = (Func<Table, int>)GetTableLength;
-            lua.Globals["_AABBFromXYWH"] = (Func<int, int, int, int, Table>)AABBFromXYWH;
-            lua.Globals["_IsCollidingAABB"] = (Func<Table, Table, bool>)LuaHelper.AABBColliding;
+            lua.Globals["GetDesktopBounds"] = (Func<Table>)GetDesktopBounds;
+            lua.Globals["GetWindows"] = (Func<bool, bool, Table>)GetWindows;
+            lua.Globals["TableLength"] = (Func<Table, int>)GetTableLength;
+            lua.Globals["AABBFromXYWH"] = (Func<int, int, int, int, Table>)AABBFromXYWH;
+            lua.Globals["IsCollidingAABB"] = (Func<Table, Table, bool>)LuaHelper.AABBColliding;
 
-            lua.Globals["_ReadValue"] = (Func<string, object>)API.SaveData.ReadValue;
-            lua.Globals["_SaveValue"] = (Action<string, object>)API.SaveData.WriteValue;
+            lua.Globals["_DrawRect"] = (Action<Table, Table>)ScreenDrawer.DrawRectangleWireframe;
+            lua.Globals["_DrawEllipse"] = (Action<Table, Table>)ScreenDrawer.DrawEllipseWireframe;
 
-            lua.Globals["_GetMousePos"] = (Func<Point>)API.Input.InputProvider.GetMousePos;
-            lua.Globals["_MouseButtonDown"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonDown;
-            lua.Globals["_MouseButtonUp"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonUp;
-            lua.Globals["_IsKeyDown"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyDown;
-            lua.Globals["_IsKeyHeld"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyHeld;
-            //lua.Globals["_IsKeyUp"] = (Func<string, bool>)API.Input.InputProvider.IsKeyUp;
+            lua.Globals["RBG"] = (Func<int, int, int, Table>)RGBColor;
+
+            lua.Globals["ReadValue"] = (Func<string, object>)API.SaveData.ReadValue;
+            lua.Globals["SaveValue"] = (Action<string, object>)API.SaveData.WriteValue;
+
+            lua.Globals["GetMousePos"] = (Func<Point>)API.Input.InputProvider.GetMousePos;
+            lua.Globals["MouseButtonDown"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonDown;
+            lua.Globals["MouseButtonUp"] = (Func<int, bool>)API.Input.InputProvider.MouseButtonUp;
+            lua.Globals["IsKeyDown"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyDown;
+            lua.Globals["IsKeyHeld"] = (Func<API.Input.VirtualKey, bool>)API.Input.InputProvider.IsKeyHeld;
+            //lua.Globals["IsKeyUp"] = (Func<string, bool>)API.Input.InputProvider.IsKeyUp;
 
             lua.DoFile("LuaScripts/LuaOverrideFunctions.lua");
         }
@@ -76,8 +80,8 @@ namespace Your_Desktop_Pet.Core.Lua
 
         private void PopulateVariables()
         {
-            lua.DoString("desktopBounds = _GetDesktopBounds()");
-            lua.DoString("windows = _GetWindows(true, true)");
+            lua.DoString(@"pet = {}
+desktopBounds = GetDesktopBounds()");
 
             Table petTable = new Table(lua);
 
@@ -116,6 +120,11 @@ namespace Your_Desktop_Pet.Core.Lua
         private int GetTableLength(Table table)
         {
             return table.Length;
+        }
+
+        private Table RGBColor(int r, int b, int g)
+        {
+            return LuaHelper.RGBToTable(r, g, b, lua);
         }
     }
 #pragma warning restore IDE0051 // Remove unused private members

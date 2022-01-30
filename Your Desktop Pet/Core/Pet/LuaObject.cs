@@ -20,9 +20,9 @@ namespace Your_Desktop_Pet.Core.Pet
         Center = 8,
     }
 
-    public class 
-
+    public class LuaObject : IDisposable
     {
+        public Action onObjectDestroy;
         public string name;
         public AnchorPoint anchor = AnchorPoint.TopLeft;
 
@@ -69,6 +69,20 @@ namespace Your_Desktop_Pet.Core.Pet
         public virtual void SetSize(int x, int y)
         {
             _size = new Vector2(x, y);
+        }
+
+        public string GetGUID()
+        {
+            return _guid;
+        }
+
+        public virtual void Dispose()
+        {
+            if (onObjectDestroy == null)
+                return;
+
+            onObjectDestroy.Invoke();
+            LuaObjectManager.Current.DeleteObject(_guid);
         }
     }
 }

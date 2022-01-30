@@ -1,4 +1,5 @@
 ﻿using MoonSharp.Interpreter;
+using System;
 using System.Drawing;
 
 namespace Your_Desktop_Pet.Core.Lua
@@ -17,6 +18,28 @@ namespace Your_Desktop_Pet.Core.Lua
             return table;
         }
 
+        public static Rectangle TableToRect(Table table)
+        {
+            Rectangle rect = new Rectangle();
+
+            rect.X = Convert.ToInt32(table["x"]);
+            rect.Y = Convert.ToInt32(table["y"]);
+            rect.Width = Convert.ToInt32(table["w"]);
+            rect.Height = Convert.ToInt32(table["h"]);
+
+            return rect;
+        }
+
+        public static Rectangle CircleToRect(int x, int y, int w, int h)
+        {
+            return new Rectangle(x - (w / 2), y - (h / 2), w, h);
+        }
+
+        public static Rectangle CircleToRect(Rectangle r)
+        {
+            return new Rectangle(r.X - (r.Width / 2), r.Y - (r.Height / 2), r.Width, r.Height);
+        }
+
         public static Table PointToTable(Point p, Script owner)
         {
             Table table = new Table(owner);
@@ -27,18 +50,6 @@ namespace Your_Desktop_Pet.Core.Lua
             return table;
         }
 
-        public static Rectangle TableToRect(Table table)
-        {
-            Rectangle rect = new Rectangle();
-
-            rect.X = (int)table["x"];
-            rect.Y = (int)table["y"];
-            rect.Width = (int)table["w"];
-            rect.Height = (int)table["h"];
-
-            return rect;
-        }
-
         public static Point TableToPoint(Table table)
         {
             Point p = new Point();
@@ -47,6 +58,33 @@ namespace Your_Desktop_Pet.Core.Lua
             p.Y = (int)table["y"];
 
             return p;
+        }
+
+        public static Table RGBToTable(int r, int g, int b, Script owner)
+        {
+            Table table = new Table(owner);
+
+            table["r"] = r;
+            table["g"] = g;
+            table["b"] = b;
+
+            return table;
+        }
+
+        public static Table RGBToTable(Color c, Script owner)
+        {
+            Table table = new Table(owner);
+
+            table["r"] = c.R;
+            table["g"] = c.G;
+            table["b"] = c.B;
+
+            return table;
+        }
+
+        public static Color TableToRGB(Table a)
+        {
+            return Color.FromArgb(Convert.ToInt32(a["r"]), Convert.ToInt32(a["g"]), Convert.ToInt32(a["b"]));
         }
 
         public static Table AABBFromXYWH(int x, int y, int w, int h, Script owner)

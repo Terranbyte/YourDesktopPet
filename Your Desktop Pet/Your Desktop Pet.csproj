@@ -41,6 +41,9 @@
     <Reference Include="MoonSharp.Interpreter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=921e73ce94aa17f8, processorArchitecture=MSIL">
       <HintPath>..\packages\MoonSharp.2.0.0.0\lib\net40-client\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
+    <Reference Include="MoonSharp.RemoteDebugger, Version=2.0.0.0, Culture=neutral, PublicKeyToken=921e73ce94aa17f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\MoonSharp.Debugger.2.0.0.0\lib\net40-client\MoonSharp.RemoteDebugger.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -58,6 +61,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\InterpolationPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Core\API\Input\InputProvider.cs" />
     <Compile Include="Core\API\SaveData.cs" />
     <Compile Include="Core\Drawing\Animator.cs" />
@@ -66,9 +72,13 @@
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Helpers\DesktopWindows.cs" />
     <Compile Include="Core\Helpers\Log.cs" />
+    <Compile Include="Core\Helpers\SpriteSheetHelper.cs" />
     <Compile Include="Core\Helpers\Time.cs" />
     <Compile Include="Core\Lua\LuaHelper.cs" />
     <Compile Include="Core\Lua\PetLuaHandler.cs" />
+    <Compile Include="Core\Pet\ActivePetData.cs" />
+    <Compile Include="Core\Pet\LuaObject.cs" />
+    <Compile Include="Core\Pet\LuaObjectManager.cs" />
     <Compile Include="Core\Pet\PetObject.cs" />
     <Compile Include="Forms\ActivePets.cs">
       <SubType>Form</SubType>
@@ -77,6 +87,12 @@
       <DependentUpon>ActivePets.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormManager.cs" />
+    <Compile Include="Forms\PetDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PetDetails.Designer.cs">
+      <DependentUpon>PetDetails.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SpriteWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,8 +113,8 @@
     <EmbeddedResource Include="Forms\ActivePets.resx">
       <DependentUpon>ActivePets.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LuaScripts\PetVariables.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <EmbeddedResource Include="Forms\PetDetails.resx">
+      <DependentUpon>PetDetails.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LuaScripts\LuaOverrideFunctions.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

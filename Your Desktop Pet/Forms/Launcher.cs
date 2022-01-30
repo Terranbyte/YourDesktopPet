@@ -17,6 +17,7 @@ namespace Your_Desktop_Pet.Forms
     public partial class Launcher : Form
     {
         private Core.Pet.PetObject pet;
+        private System.Drawing.Drawing2D.InterpolationMode interpMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         private Queue<float> fpsSamples = new Queue<float>();
         private string[] petDirectories = new string[0];
         private IntPtr hWnd;
@@ -82,7 +83,7 @@ namespace Your_Desktop_Pet.Forms
             }
             finally
             {
-                if (CheckPetFileStructure(installPath))
+                if (CheckPetFileStructure(installPath, out string e))
                 {
                     Ini.IniFile iniFile = new Ini.IniFile(installPath + @"pet.ini");
                     string id = iniFile.IniReadValue("PetInfo", "Guid");
@@ -92,7 +93,9 @@ namespace Your_Desktop_Pet.Forms
                     {
                         DialogResult result = MessageBox.Show("That pet already exists, would you like to replace it?\nDOING THIS WILL COMPLETELY RESET THE PET!", "Pet already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
+                        {
                             Directory.Delete(Core.Globals.dataPath + id, true);
+                        }
                         else
                         {
                             Directory.Delete(installPath, true);
@@ -107,7 +110,9 @@ namespace Your_Desktop_Pet.Forms
                 {
                     if (Directory.Exists(installPath))
                         Directory.Delete(installPath, true);
+
                     MessageBox.Show("The given pet archive was not a valid pet.\nUndoing changes.", "Error when adding new pet", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Core.Helpers.Log.WriteLine("Launcher", $"Error: {e}");
                 }
 
                 if (zipFile != null)
@@ -118,40 +123,36 @@ namespace Your_Desktop_Pet.Forms
             }
         }
 
+        private void ClearPetList()
+        {
+            if (list_petList.SmallImageList != null)
+            {
+                list_petList.SmallImageList.Images.Clear();
+                list_petList.SmallImageList.Dispose();
+            }
+
+            list_petList.Items.Clear();
+        }
+
         private void GetPetList()
         {
+            ClearPetList();
             ImageList imageList = new ImageList();
             imageList.ImageSize = new Size(64, 64);
             imageList.ColorDepth = ColorDepth.Depth16Bit;
-
-            list_petList.Items.Clear();
 
             petDirectories = Directory.GetDirectories(Core.Globals.dataPath);
             for (int i = 0; i < petDirectories.Length; i++)
             {
                 string directory = petDirectories[i];
-                Bitmap bitmap = new Bitmap(64, 64);
 
-                try
+                if (!CheckPetFileStructure(directory, out string e))
                 {
-                    Image image = Image.FromFile(directory + @"\icon.png");
-                    
-                    using (Graphics g =  Graphics.FromImage(bitmap))
-                    {
-                        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                        g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-                        g.DrawImage(image, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
-                        g.Save();
-                    }
+                    Core.Helpers.Log.WriteLine("Launcher", $"Error: Tried to access incomplete pet {directory}, skipping...\nException: {e}");
+                    continue;
+                }
 
-                    image.Dispose();
-                    imageList.Images.Add(bitmap);
-                }
-                catch (Exception e)
-                {
-                    imageList.Images.Add(bitmap);
-                    Core.Helpers.Log.WriteLine("Launcher", e.Message);
-                }
+                imageList.Images.Add(new Bitmap(Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(directory + "\\icon.png", 1, 0, interpMode)));
 
                 Ini.IniFile iniFile = new Ini.IniFile(directory + @"\pet.ini");
                 list_petList.Items.Add(iniFile.IniReadValue("PetInfo", "Name"), i);
@@ -165,29 +166,39 @@ namespace Your_Desktop_Pet.Forms
             if (pet != null)
             {
                 pet.Stop();
-                pet = null;
+                pet.Dispose();
             }
 
             pet = new Core.Pet.PetObject(petPath);
+            Core.Pet.LuaObjectManager.Current.AddObject(pet);
             pet.Start();
         }
 
-        private bool CheckPetFileStructure(string petPath)
+        private bool CheckPetFileStructure(string petPath, out string error)
         {
+            bool success = true;
             string[] filesToCheck = new string[]
             {
-                @"\pet.ini",
-                @"icon.png",
-                @"\Scripts\pet.lua",
+                "\\pet.ini",
+                "\\icon.png",
+                "\\Scripts\\pet.lua",
             };
+
+            error = null;
 
             foreach (string s in filesToCheck)
             {
                 if (!File.Exists(petPath + s) && !Directory.Exists(petPath + s))
-                    return false;
+                {
+                    if (string.IsNullOrEmpty(error))
+                        error = $"Missing file(s) \"{s.Substring(1)}\"";
+                    else
+                        error += $", \"{s.Substring(1)}\"";
+                    success = false;
+                }
             }
 
-            return true;
+            return success;
         }
 
         private void ApplyAppSettings()
@@ -201,7 +212,7 @@ namespace Your_Desktop_Pet.Forms
         {
             if (list_petList.SelectedIndices.Count == 0)
             {
-                MessageBox.Show("Looks like you don't have any pet selected.", "No pet to spawn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Looks like you don't have any pet selected.", "No pet selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -231,7 +242,7 @@ namespace Your_Desktop_Pet.Forms
         {
             if (list_petList.Items.Count == 0 || list_petList.SelectedIndices.Count == 0)
             {
-                MessageBox.Show("Looks like you don't have any pet selected.", "No pet to spawn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Looks like you don't have any pet selected.", "No pet selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -239,7 +250,10 @@ namespace Your_Desktop_Pet.Forms
 
             if (result == DialogResult.Yes)
             {
-                string removePath = petDirectories[list_petList.SelectedIndices[0]];
+                int index = list_petList.SelectedIndices[0];
+                ClearPetList();
+                string removePath = petDirectories[index];
+
                 if (Directory.Exists(removePath))
                     Directory.Delete(removePath, true);
 
@@ -249,7 +263,19 @@ namespace Your_Desktop_Pet.Forms
 
         private void btn_details_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (list_petList.SelectedIndices.Count == 0)
+            {
+                MessageBox.Show("Looks like you don't have any pet selected.", "No pet selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string dir = petDirectories[list_petList.SelectedIndices[0]];
+
+            PetDetails details = new PetDetails(
+                dir,
+                Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(dir + "\\icon.png", 1, 0, interpMode));
+            FormManager.Current.RegisterForm(details);
+            details.Show();
         }
 
         private void btn_options_Click(object sender, EventArgs e)
@@ -287,6 +313,7 @@ namespace Your_Desktop_Pet.Forms
             fpsSamples.Dequeue();
             fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
 
+
             Console.Title = $"FPS: {Math.Round(1f / fpsSamples.Average())}";
             //Console.Title = Core.Helpers.Time.deltaTime.ToString();
 
@@ -297,7 +324,6 @@ namespace Your_Desktop_Pet.Forms
                     pet = null;
                     return;
                 }
-
 
                 pet.currentTime += Core.Helpers.Time.deltaTime;
                 pet.totalTime += Core.Helpers.Time.deltaTime;
@@ -316,6 +342,13 @@ namespace Your_Desktop_Pet.Forms
 
                 pet.currentTime -= pet.updateInterval;
             }
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = interpMode;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            base.OnPaintBackground(e);
         }
     }
 }

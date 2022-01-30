@@ -1,4 +1,4 @@
-﻿windows = _GetWindows(false, false)
+﻿windows = GetWindows(false, false)
 
 function tablelength(T)
     local count = 0
@@ -14,7 +14,7 @@ for i = 0, max - 1, 1 do
     print("\n")
 end
 
-print(_GetDesktopBounds())
-_SaveValue("Testening_value", windows[0].name)
-print(_ReadValue("Testening_value"))
-print(_GetMousePos())
+print(GetDesktopBounds())
+SaveValue("Testening_value", windows[0].name)
+print(ReadValue("Testening_value"))
+print(GetMousePos())

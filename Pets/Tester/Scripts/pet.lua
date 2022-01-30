@@ -1,4 +1,4 @@
-windows = _GetWindows(false, true)
+windows = GetWindows(false, true)
 baseGravity = 0.53
 desktopHeight = desktopBounds.h
 --gravityMultiplier = 0.5
@@ -6,6 +6,7 @@ yVelocity = 0
 yMaxVelocity = 30
 jump = false
 grounded = false
+col = RBG(255, 0, 0)
 
 function _Start()
     pet.animation = "idle"
@@ -16,13 +17,13 @@ end
 
 function _Update()
     -- take input
-    jump = _IsKeyDown(virtualKey.SPACE)
+    jump = IsKeyDown(virtualKey.SPACE)
     
-    if _IsKeyHeld(virtualKey.D) then
+    if IsKeyHeld(virtualKey.D) then
         pet.animation = "run"
         pet.flipX = false
         pet.x = pet.x + 8
-    elseif _IsKeyHeld(virtualKey.A) then
+    elseif IsKeyHeld(virtualKey.A) then
         pet.animation = "run"
         pet.flipX = true
         pet.x = pet.x - 8
@@ -42,7 +43,7 @@ function _Update()
 end
 
 function _LateUpdate()
-    windows = _GetWindows(false, true)
+    windows = GetWindows(true, true)
 
     yVelocity = yVelocity + baseGravity
     grounded = false
@@ -60,10 +61,10 @@ function _LateUpdate()
 
     -- check window collisions
     for k, v in pairs(windows) do
-        pb = _AABBFromXYWH(pet.AABB.x + 52, pet.y - 20, pet.AABB.w - 128, 20 + yVelocity)
-        wb = _AABBFromXYWH(v.AABB.x, v.AABB.y, v.AABB.w, 20)
+        pb = AABBFromXYWH(pet.AABB.x + 72, pet.y - 20 + yVelocity, pet.AABB.w - 128, 20)
+        wb = AABBFromXYWH(v.AABB.x, v.AABB.y, v.AABB.w, 20)
         
-        if _IsCollidingAABB(pb, wb) and yVelocity >= 0 then
+        if IsCollidingAABB(pb, wb) and yVelocity >= 0 then
             pet.y = wb.y + 1
             yVelocity = 0
             grounded = true
@@ -79,5 +80,13 @@ function _LateUpdate()
 end
 
 function _Draw()
-    --print("Draw")
+    -- pb = AABBFromXYWH(pet.AABB.x + 72, pet.y - 20 + yVelocity, pet.AABB.w - 128, 20)
+    -- windows = GetWindows(true, true)
+    -- _DrawRect(pb, col)
+
+    -- for k, v in pairs(windows) do
+    --     _DrawRect(v.AABB, col)
+    -- end
 end
+
+-- function 
