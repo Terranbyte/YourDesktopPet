@@ -108,6 +108,7 @@ namespace Your_Desktop_Pet.Forms.SDK
             {
                 _pet.Stop();
                 _pet.Dispose();
+                _pet = null;
             }
         }
     }

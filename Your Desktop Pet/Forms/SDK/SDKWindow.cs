@@ -142,75 +142,6 @@ namespace Your_Desktop_Pet.Forms.SDK
             UpdateProjectList();
         }
 
-        private void ImportPetArchive(string path)
-        {
-            ZipFile zipFile = new ZipFile(path);
-            string installPath = _projectDir + "\\temp\\";
-
-            try
-            {
-                foreach (ZipEntry zipEntry in zipFile)
-                {
-                    string entryFileName = zipEntry.Name;
-                    byte[] buffer = new byte[4096];
-                    Stream zipStream = zipFile.GetInputStream(zipEntry);
-
-                    string fullZipToPath = Path.Combine(installPath, entryFileName);
-                    string directoryName = Path.GetDirectoryName(fullZipToPath);
-
-                    if (directoryName.Length > 0)
-                    {
-                        Directory.CreateDirectory(directoryName);
-                    }
-
-                    using (FileStream streamWriter = File.Open(fullZipToPath, FileMode.Create))
-                    {
-                        StreamUtils.Copy(zipStream, streamWriter, buffer);
-                    }
-                }
-            }
-            finally
-            {
-                if (Core.Helpers.PetHelper.CheckPetFileStructure(installPath, out string e))
-                {
-                    Ini.IniFile iniFile = new Ini.IniFile(installPath + @"pet.ini");
-                    string id = iniFile.IniReadValue("PetInfo", "Guid");
-                    bool deleted = false;
-
-                    if (Directory.Exists(Core.Globals.dataPath + id))
-                    {
-                        DialogResult result = MessageBox.Show("That pet already exists, would you like to replace it?\nDOING THIS WILL COMPLETELY RESET THE PET!", "Pet already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (result == DialogResult.Yes)
-                        {
-                            Directory.Delete(Core.Globals.dataPath + id, true);
-                        }
-                        else
-                        {
-                            Directory.Delete(installPath, true);
-                            deleted = true;
-                        }
-                    }
-
-                    if (!deleted)
-                        Directory.Move(installPath, Core.Globals.dataPath + id);
-                }
-                else
-                {
-                    if (Directory.Exists(installPath))
-                        Directory.Delete(installPath, true);
-
-                    MessageBox.Show("The given pet archive was not a valid pet.\nUndoing changes.", "Error when adding new pet", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Core.Helpers.Log.WriteLine("Launcher", $"Error: {e}");
-                }
-
-                if (zipFile != null)
-                {
-                    zipFile.IsStreamOwner = true;
-                    zipFile.Close();
-                }
-            }
-        }
-
         private void btn_create_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(_projectDir + "\\New pet"))
@@ -227,27 +158,6 @@ namespace Your_Desktop_Pet.Forms.SDK
             }
 
             CreateNewProject(_projectDir + "\\New pet");
-        }
-
-        private void btn_import_Click(object sender, EventArgs e)
-        {
-            ClearProjectList();
-
-            using (OpenFileDialog dialog = new OpenFileDialog())
-            {
-                dialog.Title = "Import pet";
-                dialog.Filter = "Pet archive (*.pet)|*.pet|Zip archive(*.zip)|*.zip";
-                dialog.RestoreDirectory = true;
-
-                DialogResult result = dialog.ShowDialog();
-
-                if (result == DialogResult.OK)
-                {
-                    ImportPetArchive(dialog.FileName);
-                }
-            }
-
-            UpdateProjectList();
         }
 
         private void btn_delete_Click(object sender, EventArgs e)

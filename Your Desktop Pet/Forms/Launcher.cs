@@ -258,9 +258,13 @@ namespace Your_Desktop_Pet.Forms
 
         private void btn_sdk_Click(object sender, EventArgs e)
         {
+            updateTimer.Stop();
             Hide();
+
             SDK.SDKWindow w = new SDK.SDKWindow();
             w.ShowDialog();
+            
+            updateTimer.Start();
             Show();
         }
 
@@ -288,7 +292,6 @@ namespace Your_Desktop_Pet.Forms
 
             _fpsSamples.Dequeue();
             _fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
-
 
             Console.Title = $"FPS: {Math.Round(1f / _fpsSamples.Average())}";
             //Console.Title = Core.Helpers.Time.deltaTime.ToString();

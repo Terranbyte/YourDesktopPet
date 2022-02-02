@@ -94,10 +94,8 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Tick()
         {
-            if (_numFrames <= 1)
-                return;
-
-            _currentFrame = (_currentFrame + 1) % _numFrames;
+            if (_numFrames > 1)
+                _currentFrame = (_currentFrame + 1) % _numFrames;
             _sprite.SetSprite(_frames[_currentFrame]);
         }
 

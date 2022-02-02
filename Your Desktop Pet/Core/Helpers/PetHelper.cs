@@ -35,5 +35,23 @@ namespace Your_Desktop_Pet.Core.Helpers
 
             return success;
         }
+
+        public static void FixProjectFileStructure(string projectPath)
+        {
+            string[] filesToCheck = new string[]
+            {
+                "\\Sprites",
+                "\\Scripts",
+                "\\Assets",
+            };
+
+            foreach (string s in filesToCheck)
+            {
+                if (!Directory.Exists(projectPath + s))
+                {
+                    Directory.CreateDirectory(projectPath + s);
+                }
+            }
+        }
     }
 }

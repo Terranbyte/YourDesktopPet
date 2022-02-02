@@ -34,6 +34,12 @@ namespace Your_Desktop_Pet.Core.Pet
 
         public void DeleteObject(string guid)
         {
+            LuaObject o = GetObjectFromGUID<LuaObject>(guid);
+
+            if (o == null)
+                return;
+
+            o.Dispose();
             objects.Remove(GetObjectFromGUID<LuaObject>(guid));
         }
 

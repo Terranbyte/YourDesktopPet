@@ -37,7 +37,6 @@
             this.test = new System.Windows.Forms.DataGridViewButtonColumn();
             this.compile = new System.Windows.Forms.DataGridViewButtonColumn();
             this.btn_refresh = new System.Windows.Forms.Button();
-            this.btn_import = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.projectDataSourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.projectView)).BeginInit();
@@ -46,6 +45,7 @@
             // 
             // btn_projects
             // 
+            this.btn_projects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btn_projects.Location = new System.Drawing.Point(339, 12);
             this.btn_projects.Name = "btn_projects";
             this.btn_projects.Size = new System.Drawing.Size(121, 23);
@@ -56,7 +56,7 @@
             // 
             // btn_delete
             // 
-            this.btn_delete.Location = new System.Drawing.Point(230, 12);
+            this.btn_delete.Location = new System.Drawing.Point(121, 12);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(103, 23);
             this.btn_delete.TabIndex = 2;
@@ -128,16 +128,6 @@
             this.btn_refresh.UseVisualStyleBackColor = true;
             this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
-            // btn_import
-            // 
-            this.btn_import.Location = new System.Drawing.Point(121, 12);
-            this.btn_import.Name = "btn_import";
-            this.btn_import.Size = new System.Drawing.Size(103, 23);
-            this.btn_import.TabIndex = 6;
-            this.btn_import.Text = "Import Project";
-            this.btn_import.UseVisualStyleBackColor = true;
-            this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
-            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
@@ -153,7 +143,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(472, 419);
-            this.Controls.Add(this.btn_import);
             this.Controls.Add(this.btn_refresh);
             this.Controls.Add(this.projectView);
             this.Controls.Add(this.btn_create);
@@ -181,6 +170,5 @@
         private System.Windows.Forms.DataGridViewButtonColumn metadata;
         private System.Windows.Forms.DataGridViewButtonColumn test;
         private System.Windows.Forms.DataGridViewButtonColumn compile;
-        private System.Windows.Forms.Button btn_import;
     }
 }
