@@ -83,7 +83,7 @@ namespace Your_Desktop_Pet.Forms
             }
             finally
             {
-                if (CheckPetFileStructure(installPath, out string e))
+                if (Core.Helpers.PetHelper.CheckPetFileStructure(installPath, out string e))
                 {
                     Ini.IniFile iniFile = new Ini.IniFile(installPath + @"pet.ini");
                     string id = iniFile.IniReadValue("PetInfo", "Guid");
@@ -146,7 +146,7 @@ namespace Your_Desktop_Pet.Forms
             {
                 string directory = petDirectories[i];
 
-                if (!CheckPetFileStructure(directory, out string e))
+                if (!Core.Helpers.PetHelper.CheckPetFileStructure(directory, out string e))
                 {
                     Core.Helpers.Log.WriteLine("Launcher", $"Error: Tried to access incomplete pet {directory}, skipping...\nException: {e}");
                     continue;
@@ -172,33 +172,6 @@ namespace Your_Desktop_Pet.Forms
             pet = new Core.Pet.PetObject(petPath);
             Core.Pet.LuaObjectManager.Current.AddObject(pet);
             pet.Start();
-        }
-
-        private bool CheckPetFileStructure(string petPath, out string error)
-        {
-            bool success = true;
-            string[] filesToCheck = new string[]
-            {
-                "\\pet.ini",
-                "\\icon.png",
-                "\\Scripts\\pet.lua",
-            };
-
-            error = null;
-
-            foreach (string s in filesToCheck)
-            {
-                if (!File.Exists(petPath + s) && !Directory.Exists(petPath + s))
-                {
-                    if (string.IsNullOrEmpty(error))
-                        error = $"Missing file(s) \"{s.Substring(1)}\"";
-                    else
-                        error += $", \"{s.Substring(1)}\"";
-                    success = false;
-                }
-            }
-
-            return success;
         }
 
         private void ApplyAppSettings()

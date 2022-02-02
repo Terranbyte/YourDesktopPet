@@ -53,3 +53,4 @@ C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your Des
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.PetDetails.resources
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.RemoteDebugger.dll
 C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\bin\Debug\MoonSharp.RemoteDebugger.pdb
+C:\Users\fredr\source\repos\Your Desktop Pet\Your Desktop Pet\obj\Debug\Your_Desktop_Pet.Forms.SDK.SDKWindow.resources

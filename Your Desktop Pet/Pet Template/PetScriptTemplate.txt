@@ -1,0 +1,19 @@
+﻿desktopBounds = GetDesktopBounds()
+
+function _Start()
+	pet.x = desktopBounds.x / 2
+	pet.y = desktopBounds.y / 2
+	print("Hello world!")
+end
+
+function _Update()
+
+end
+
+function _LateUpdate()
+
+end
+
+function _Draw()
+
+end

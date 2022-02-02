@@ -85,7 +85,7 @@ desktopBounds = GetDesktopBounds()");
 
             Table petTable = new Table(lua);
 
-            petTable["x"] = 10;
+            petTable["x"] = 0;
             petTable["y"] = 0;
             petTable["AABB"] = LuaHelper.RectToTable(Rectangle.FromLTRB(0, 0, 0, 0), lua);
             petTable["animation"] = "";

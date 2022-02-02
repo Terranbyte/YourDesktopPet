@@ -72,6 +72,7 @@
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Helpers\DesktopWindows.cs" />
     <Compile Include="Core\Helpers\Log.cs" />
+    <Compile Include="Core\Helpers\PetHelper.cs" />
     <Compile Include="Core\Helpers\SpriteSheetHelper.cs" />
     <Compile Include="Core\Helpers\Time.cs" />
     <Compile Include="Core\Lua\LuaHelper.cs" />
@@ -92,6 +93,13 @@
     </Compile>
     <Compile Include="Forms\PetDetails.Designer.cs">
       <DependentUpon>PetDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SDK\ProjectDataSource.cs" />
+    <Compile Include="Forms\SDK\SDKWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SDK\SDKWindow.Designer.cs">
+      <DependentUpon>SDKWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SpriteWindow.cs">
       <SubType>Form</SubType>
@@ -116,6 +124,9 @@
     <EmbeddedResource Include="Forms\PetDetails.resx">
       <DependentUpon>PetDetails.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SDK\SDKWindow.resx">
+      <DependentUpon>SDKWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LuaScripts\LuaOverrideFunctions.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -127,6 +138,7 @@
     <EmbeddedResource Include="settings.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="Your_Desktop_Pet.Forms.SDK.ProjectDataSource.datasource" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\SpriteWindow.resx">
@@ -136,6 +148,14 @@
       <DependentUpon>Launcher.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Pet Template\PetIniTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pet Template\PetScriptTemplate.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pet Template\TemplateIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

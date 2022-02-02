@@ -1,0 +1,15 @@
+﻿[PetInfo]
+Name="New pet"
+Description=""
+Author=""
+Guid=""
+Version="1.0"
+
+[PetSettings]
+UpdateCallInterval=60
+AnimationFrameRate=8
+SpriteScaleFactor=1
+DefaultSprite=""
+Anchor=Center
+
+[PetCustomData]
