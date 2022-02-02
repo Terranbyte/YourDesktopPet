@@ -10,7 +10,6 @@ namespace Your_Desktop_Pet.Core.Drawing
 {
     class Animator
     {
-        public bool flipX = false;
         public string currentAnimation = "";
 
         private Image[] _frames;
@@ -43,10 +42,10 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void FlipSprite(bool flipX)
         {
-            if (this.flipX == flipX)
+            if (_sprite.flipX == flipX)
                 return;
 
-            this.flipX = flipX;
+            _sprite.flipX = flipX;
             foreach (Image image in _frames)
             {
                 image.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -84,7 +83,7 @@ namespace Your_Desktop_Pet.Core.Drawing
 
             _frames = Helpers.SpriteSheetHelper.GetSpriteSheetSprites(source, _numFrames, _sprite.window.InterpolationMode);
 
-            if (flipX)
+            if (_sprite.flipX)
             {
                 foreach (Image image in _frames)
                 {
@@ -95,8 +94,16 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Tick()
         {
+            if (_numFrames <= 1)
+                return;
+
             _currentFrame = (_currentFrame + 1) % _numFrames;
             _sprite.SetSprite(_frames[_currentFrame]);
+        }
+
+        public Forms.SDK.AnimatorDebugInfo GetDebugInfo()
+        {
+            return new Forms.SDK.AnimatorDebugInfo(currentAnimation, _numFrames, _currentFrame);
         }
     }
 }

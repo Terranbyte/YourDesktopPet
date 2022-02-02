@@ -94,6 +94,14 @@
     <Compile Include="Forms\PetDetails.Designer.cs">
       <DependentUpon>PetDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SDK\AnimatorDebugInfo.cs" />
+    <Compile Include="Forms\SDK\PetDebugInfo.cs" />
+    <Compile Include="Forms\SDK\PetTestingWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SDK\PetTestingWindow.Designer.cs">
+      <DependentUpon>PetTestingWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SDK\ProjectDataSource.cs" />
     <Compile Include="Forms\SDK\SDKWindow.cs">
       <SubType>Form</SubType>
@@ -101,6 +109,7 @@
     <Compile Include="Forms\SDK\SDKWindow.Designer.cs">
       <DependentUpon>SDKWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SDK\SpriteDebugInfo.cs" />
     <Compile Include="Forms\SpriteWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PetDetails.resx">
       <DependentUpon>PetDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SDK\PetTestingWindow.resx">
+      <DependentUpon>PetTestingWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SDK\SDKWindow.resx">
       <DependentUpon>SDKWindow.cs</DependentUpon>

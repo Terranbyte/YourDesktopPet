@@ -16,11 +16,11 @@ namespace Your_Desktop_Pet.Forms
 {
     public partial class Launcher : Form
     {
-        private Core.Pet.PetObject pet;
-        private System.Drawing.Drawing2D.InterpolationMode interpMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-        private Queue<float> fpsSamples = new Queue<float>();
-        private string[] petDirectories = new string[0];
-        private IntPtr hWnd;
+        private Core.Pet.PetObject _pet;
+        private System.Drawing.Drawing2D.InterpolationMode _interpMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+        private Queue<float> _fpsSamples = new Queue<float>();
+        private string[] _petDirectories = new string[0];
+        private IntPtr _hWnd;
 
         [DllImport("kernel32.dll")]
         static extern IntPtr GetConsoleWindow();
@@ -40,15 +40,15 @@ namespace Your_Desktop_Pet.Forms
         {
             ApplyAppSettings();
 
-            hWnd = GetConsoleWindow();
+            _hWnd = GetConsoleWindow();
             if (!Core.Globals.debugMode)
-                ShowWindow(hWnd, SW_HIDE);
+                ShowWindow(_hWnd, SW_HIDE);
 
             GetPetList();
 
             for (int i = 0; i < 5; i++)
             {
-                fpsSamples.Enqueue(1f / 60f);
+                _fpsSamples.Enqueue(1f / 60f);
             }
 
             Core.Helpers.Time.Start();
@@ -141,10 +141,10 @@ namespace Your_Desktop_Pet.Forms
             imageList.ImageSize = new Size(64, 64);
             imageList.ColorDepth = ColorDepth.Depth16Bit;
 
-            petDirectories = Directory.GetDirectories(Core.Globals.dataPath);
-            for (int i = 0; i < petDirectories.Length; i++)
+            _petDirectories = Directory.GetDirectories(Core.Globals.dataPath);
+            for (int i = 0; i < _petDirectories.Length; i++)
             {
-                string directory = petDirectories[i];
+                string directory = _petDirectories[i];
 
                 if (!Core.Helpers.PetHelper.CheckPetFileStructure(directory, out string e))
                 {
@@ -152,7 +152,7 @@ namespace Your_Desktop_Pet.Forms
                     continue;
                 }
 
-                imageList.Images.Add(new Bitmap(Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(directory + "\\icon.png", 1, 0, interpMode)));
+                imageList.Images.Add(new Bitmap(Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(directory + "\\icon.png", 1, 0, _interpMode)));
 
                 Ini.IniFile iniFile = new Ini.IniFile(directory + @"\pet.ini");
                 list_petList.Items.Add(iniFile.IniReadValue("PetInfo", "Name"), i);
@@ -163,15 +163,15 @@ namespace Your_Desktop_Pet.Forms
 
         private void SpawnPet(string petPath)
         {
-            if (pet != null)
+            if (_pet != null)
             {
-                pet.Stop();
-                pet.Dispose();
+                _pet.Stop();
+                _pet.Dispose();
             }
 
-            pet = new Core.Pet.PetObject(petPath);
-            Core.Pet.LuaObjectManager.Current.AddObject(pet);
-            pet.Start();
+            _pet = new Core.Pet.PetObject(petPath);
+            Core.Pet.LuaObjectManager.Current.AddObject(_pet);
+            _pet.Start();
         }
 
         private void ApplyAppSettings()
@@ -189,7 +189,7 @@ namespace Your_Desktop_Pet.Forms
                 return;
             }
 
-            SpawnPet(petDirectories[list_petList.SelectedIndices[0]]);
+            SpawnPet(_petDirectories[list_petList.SelectedIndices[0]]);
         }
 
         private void btn_add_Click(object sender, EventArgs e)
@@ -225,7 +225,7 @@ namespace Your_Desktop_Pet.Forms
             {
                 int index = list_petList.SelectedIndices[0];
                 ClearPetList();
-                string removePath = petDirectories[index];
+                string removePath = _petDirectories[index];
 
                 if (Directory.Exists(removePath))
                     Directory.Delete(removePath, true);
@@ -242,11 +242,11 @@ namespace Your_Desktop_Pet.Forms
                 return;
             }
 
-            string dir = petDirectories[list_petList.SelectedIndices[0]];
+            string dir = _petDirectories[list_petList.SelectedIndices[0]];
 
             PetDetails details = new PetDetails(
                 dir,
-                Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(dir + "\\icon.png", 1, 0, interpMode));
+                Core.Helpers.SpriteSheetHelper.GetSpriteFromSpriteSheet(dir + "\\icon.png", 1, 0, _interpMode));
             FormManager.Current.RegisterForm(details);
             details.Show();
         }
@@ -258,7 +258,10 @@ namespace Your_Desktop_Pet.Forms
 
         private void btn_sdk_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Hide();
+            SDK.SDKWindow w = new SDK.SDKWindow();
+            w.ShowDialog();
+            Show();
         }
 
         private void btn_activePets_Click(object sender, EventArgs e)
@@ -268,10 +271,10 @@ namespace Your_Desktop_Pet.Forms
 
         private void Launcher_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (pet != null)
+            if (_pet != null)
             {
-                pet.Stop();
-                pet = null;
+                _pet.Stop();
+                _pet = null;
             }
 
             Core.Helpers.Log.WriteLine("Main", "Debug end");
@@ -283,43 +286,43 @@ namespace Your_Desktop_Pet.Forms
             Core.Helpers.Time.Update();
             Core.API.Input.InputProvider.Update();
 
-            fpsSamples.Dequeue();
-            fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
+            _fpsSamples.Dequeue();
+            _fpsSamples.Enqueue(Core.Helpers.Time.deltaTime);
 
 
-            Console.Title = $"FPS: {Math.Round(1f / fpsSamples.Average())}";
+            Console.Title = $"FPS: {Math.Round(1f / _fpsSamples.Average())}";
             //Console.Title = Core.Helpers.Time.deltaTime.ToString();
 
-            if (pet != null && pet.ready)
+            if (_pet != null && _pet.ready)
             {
-                if (pet.shouldExit)
+                if (_pet.shouldExit)
                 {
-                    pet = null;
+                    _pet = null;
                     return;
                 }
 
-                pet.currentTime += Core.Helpers.Time.deltaTime;
-                pet.totalTime += Core.Helpers.Time.deltaTime;
+                _pet.currentTime += Core.Helpers.Time.deltaTime;
+                _pet.totalTime += Core.Helpers.Time.deltaTime;
 
-                if (pet.currentTime < pet.updateInterval)
+                if (_pet.currentTime < _pet.updateInterval)
                     return;
 
-                pet.animationTime += 1;
-                pet.Update();
+                _pet.animationTime += 1;
+                _pet.Update();
 
-                if (pet.animationTime >= pet.animationInterval)
+                if (_pet.animationTime >= _pet.animationInterval)
                 {
-                    pet.Draw();
-                    pet.animationTime -= pet.animationInterval;
+                    _pet.Draw();
+                    _pet.animationTime -= _pet.animationInterval;
                 }
 
-                pet.currentTime -= pet.updateInterval;
+                _pet.currentTime -= _pet.updateInterval;
             }
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.InterpolationMode = interpMode;
+            e.Graphics.InterpolationMode = _interpMode;
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             base.OnPaintBackground(e);
         }

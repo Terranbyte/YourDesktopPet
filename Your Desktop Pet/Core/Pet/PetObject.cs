@@ -123,6 +123,11 @@ namespace Your_Desktop_Pet.Core.Pet
             Process.Start(remoteDebugger.HttpUrlStringLocalHost);
         }
 
+        public Forms.SDK.PetDebugInfo GetDebugInfo()
+        {
+            return new Forms.SDK.PetDebugInfo(_position, _size, _animator.GetDebugInfo());
+        }
+
         public void Stop()
         {
             window.Close();

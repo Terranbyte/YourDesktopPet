@@ -23,7 +23,7 @@ namespace Your_Desktop_Pet
                 Directory.CreateDirectory(Core.Globals.dataPath);
 
             Core.Drawing.ScreenDrawer.InitDraw();
-            Application.Run(Forms.FormManager.Current.CreateForm<Forms.SDK.SDKWindow>());
+            Application.Run(Forms.FormManager.Current.CreateForm<Forms.Launcher>());
             Core.Drawing.ScreenDrawer.TerminateDraw();
         }
     }

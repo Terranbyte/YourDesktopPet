@@ -1,9 +1,11 @@
 ﻿desktopBounds = GetDesktopBounds()
 
 function _Start()
-	pet.x = desktopBounds.x / 2
-	pet.y = desktopBounds.y / 2
+	pet.x = desktopBounds.w / 2
+	pet.y = desktopBounds.h / 2
 	print("Hello world!")
+	print(desktopBounds.h)
+	print(desktopBounds.w)
 end
 
 function _Update()

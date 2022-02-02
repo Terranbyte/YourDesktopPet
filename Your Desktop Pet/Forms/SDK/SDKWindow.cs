@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -79,6 +81,7 @@ namespace Your_Desktop_Pet.Forms.SDK
             try
             {
                 Core.Helpers.Log.WriteLine("SDK", "Creating new project...");
+                Core.Helpers.Log.IndentationLevel += 1;
 
                 Core.Helpers.Log.WriteLine("SDK", "Creating directories...");
                 Directory.CreateDirectory(path);
@@ -99,14 +102,17 @@ namespace Your_Desktop_Pet.Forms.SDK
                 }
                 Core.Helpers.Log.WriteLine("SDK", "Done!");
 
-                Core.Helpers.Log.WriteLine("SDK", "Creating template icon...");
-                using (FileStream fs = new FileStream(path + "\\icon.png", FileMode.Create, FileAccess.Write))
+                Core.Helpers.Log.WriteLine("SDK", "Creating default images...");
+                using (FileStream icon = new FileStream(path + "\\icon.png", FileMode.Create, FileAccess.Write))
+                using (FileStream defaultImg = new FileStream(path + "\\Sprites\\default_1.png", FileMode.Create, FileAccess.Write))
                 using (Stream stream = assembly.GetManifestResourceStream(
                     assembly.GetManifestResourceNames().Where(x => x.Contains("TemplateIcon.png")).ToArray()[0]
                     ))
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    stream.CopyTo(fs);
+                    stream.CopyTo(icon);
+                    stream.Position = 0;
+                    stream.CopyTo(defaultImg);
                 }
                 Core.Helpers.Log.WriteLine("SDK", "Done!");
 
@@ -125,11 +131,84 @@ namespace Your_Desktop_Pet.Forms.SDK
             {
                 Directory.Delete(path, true);
                 Core.Helpers.Log.WriteLine("SDK", e.Message);
+                Core.Helpers.Log.IndentationLevel = 0;
                 return;
             }
+            
+            Core.Helpers.Log.IndentationLevel = 0;
+            Core.Helpers.Log.WriteLine("SDK", "Done!");
 
             ClearProjectList();
             UpdateProjectList();
+        }
+
+        private void ImportPetArchive(string path)
+        {
+            ZipFile zipFile = new ZipFile(path);
+            string installPath = _projectDir + "\\temp\\";
+
+            try
+            {
+                foreach (ZipEntry zipEntry in zipFile)
+                {
+                    string entryFileName = zipEntry.Name;
+                    byte[] buffer = new byte[4096];
+                    Stream zipStream = zipFile.GetInputStream(zipEntry);
+
+                    string fullZipToPath = Path.Combine(installPath, entryFileName);
+                    string directoryName = Path.GetDirectoryName(fullZipToPath);
+
+                    if (directoryName.Length > 0)
+                    {
+                        Directory.CreateDirectory(directoryName);
+                    }
+
+                    using (FileStream streamWriter = File.Open(fullZipToPath, FileMode.Create))
+                    {
+                        StreamUtils.Copy(zipStream, streamWriter, buffer);
+                    }
+                }
+            }
+            finally
+            {
+                if (Core.Helpers.PetHelper.CheckPetFileStructure(installPath, out string e))
+                {
+                    Ini.IniFile iniFile = new Ini.IniFile(installPath + @"pet.ini");
+                    string id = iniFile.IniReadValue("PetInfo", "Guid");
+                    bool deleted = false;
+
+                    if (Directory.Exists(Core.Globals.dataPath + id))
+                    {
+                        DialogResult result = MessageBox.Show("That pet already exists, would you like to replace it?\nDOING THIS WILL COMPLETELY RESET THE PET!", "Pet already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            Directory.Delete(Core.Globals.dataPath + id, true);
+                        }
+                        else
+                        {
+                            Directory.Delete(installPath, true);
+                            deleted = true;
+                        }
+                    }
+
+                    if (!deleted)
+                        Directory.Move(installPath, Core.Globals.dataPath + id);
+                }
+                else
+                {
+                    if (Directory.Exists(installPath))
+                        Directory.Delete(installPath, true);
+
+                    MessageBox.Show("The given pet archive was not a valid pet.\nUndoing changes.", "Error when adding new pet", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Core.Helpers.Log.WriteLine("Launcher", $"Error: {e}");
+                }
+
+                if (zipFile != null)
+                {
+                    zipFile.IsStreamOwner = true;
+                    zipFile.Close();
+                }
+            }
         }
 
         private void btn_create_Click(object sender, EventArgs e)
@@ -150,9 +229,25 @@ namespace Your_Desktop_Pet.Forms.SDK
             CreateNewProject(_projectDir + "\\New pet");
         }
 
-        private void btn_projects_Click(object sender, EventArgs e)
+        private void btn_import_Click(object sender, EventArgs e)
         {
-            SetProjectFolder();
+            ClearProjectList();
+
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Title = "Import pet";
+                dialog.Filter = "Pet archive (*.pet)|*.pet|Zip archive(*.zip)|*.zip";
+                dialog.RestoreDirectory = true;
+
+                DialogResult result = dialog.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    ImportPetArchive(dialog.FileName);
+                }
+            }
+
+            UpdateProjectList();
         }
 
         private void btn_delete_Click(object sender, EventArgs e)
@@ -178,6 +273,11 @@ namespace Your_Desktop_Pet.Forms.SDK
             }
         }
 
+        private void btn_projects_Click(object sender, EventArgs e)
+        {
+            SetProjectFolder();
+        }
+
         private void btn_refresh_Click(object sender, EventArgs e)
         {
             ClearProjectList();
@@ -194,32 +294,40 @@ namespace Your_Desktop_Pet.Forms.SDK
 
         private void projectView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            string projectPath = _projectDir + $"\\{projectView.Rows[e.RowIndex].Cells[0].Value}";
+
             switch (projectView.Columns[e.ColumnIndex].Name)
             {
-                case "Metadata":
+                case "metadata":
+                    EditMetadata(projectPath);
                     break;
-                case "Test":
+                case "test":
+                    TestProject(projectPath);
                     break;
-                case "Build":
+                case "compile":
+                    BuildProject(projectPath);
                     break;
                 default:
                     break;
             }
         }
 
-        private void EditMetadata()
+        private void EditMetadata(string path)
         {
-
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void TestProject()
+        private void TestProject(string path)
         {
-
+            Core.Helpers.Log.WriteLine("SDK", "Launching pet tester...");
+            PetTestingWindow w = new PetTestingWindow(path);
+            FormManager.Current.RegisterForm(w);
+            w.Show();
         }
 
-        private void BuildProject()
+        private void BuildProject(string path)
         {
-
+            MessageBox.Show("That feature isn't implemented yet, sorry!", "Missing feature", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

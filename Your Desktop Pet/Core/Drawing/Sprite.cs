@@ -13,6 +13,7 @@ namespace Your_Desktop_Pet.Core.Drawing
     class Sprite : Core.Pet.LuaObject
     {
         public Forms.SpriteWindow window = null;
+        public bool flipX = false;
         public bool shouldExit = false;
         public bool shouldHalt { get { return !_shown; } private set { } }
 
@@ -27,13 +28,6 @@ namespace Your_Desktop_Pet.Core.Drawing
             _position = new Vector2(window.Left, window.Top);
             _size = new Vector2(window.Right, window.Bottom);
 
-            //_spriteThread = new Thread(new ThreadStart(() =>
-            //{
-            //    window.ShowDialog();
-            //}));
-            //_spriteThread.SetApartmentState(ApartmentState.STA);
-            //_spriteThread.Start();
-
             Hide();
         }
 
@@ -46,14 +40,16 @@ namespace Your_Desktop_Pet.Core.Drawing
             window.Hide();
 
             SetPosition(window.Left, window.Top);
-            SetSprite(defaultSprite);
 
-            //_spriteThread = new Thread(new ThreadStart(() =>
-            //{
-            //    window.ShowDialog();
-            //}));
-            //_spriteThread.SetApartmentState(ApartmentState.STA);
-            //_spriteThread.Start();
+            if (string.IsNullOrEmpty(defaultSprite))
+            {
+                Exception e = new ArgumentException("Default sprite was not set in pet.ini");
+                Helpers.Log.WriteLine("Sprite", "Warning: " + e.Message);
+            }
+            else
+            {
+                SetSprite(defaultSprite);
+            }
 
             Hide();
         }
@@ -74,6 +70,16 @@ namespace Your_Desktop_Pet.Core.Drawing
 
             window.Hide();
             _shown = false;
+        }
+
+        public void FlipSprite(bool flipX)
+        {
+            if (this.flipX == flipX)
+                return;
+
+            this.flipX = flipX;
+            window.BackgroundImage.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            window.Invalidate();
         }
 
         public override void SetPosition(float x, float y)

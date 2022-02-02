@@ -16,7 +16,7 @@ namespace Your_Desktop_Pet.Forms
         private void onFormClosed(object sender, EventArgs e)
         {
             forms.Remove((Form)sender);
-            Core.Helpers.Log.WriteLine("Main", $"Window closed: {((Form)sender).Name}");
+            Core.Helpers.Log.WriteLine("Form Manager", $"Window closed: {((Form)sender).Name}");
 
             if (!forms.Any())
             {

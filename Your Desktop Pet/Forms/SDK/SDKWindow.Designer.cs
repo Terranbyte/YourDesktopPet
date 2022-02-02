@@ -33,10 +33,11 @@
             this.btn_delete = new System.Windows.Forms.Button();
             this.btn_create = new System.Windows.Forms.Button();
             this.projectView = new System.Windows.Forms.DataGridView();
-            this.btn_refresh = new System.Windows.Forms.Button();
             this.metadata = new System.Windows.Forms.DataGridViewButtonColumn();
             this.test = new System.Windows.Forms.DataGridViewButtonColumn();
             this.compile = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btn_refresh = new System.Windows.Forms.Button();
+            this.btn_import = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.projectDataSourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.projectView)).BeginInit();
@@ -45,8 +46,7 @@
             // 
             // btn_projects
             // 
-            this.btn_projects.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_projects.Location = new System.Drawing.Point(334, 12);
+            this.btn_projects.Location = new System.Drawing.Point(339, 12);
             this.btn_projects.Name = "btn_projects";
             this.btn_projects.Size = new System.Drawing.Size(121, 23);
             this.btn_projects.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // btn_delete
             // 
-            this.btn_delete.Location = new System.Drawing.Point(121, 12);
+            this.btn_delete.Location = new System.Drawing.Point(230, 12);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(103, 23);
             this.btn_delete.TabIndex = 2;
@@ -91,21 +91,10 @@
             this.projectView.DataSource = this.projectDataSourceBindingSource;
             this.projectView.Location = new System.Drawing.Point(12, 41);
             this.projectView.Name = "projectView";
-            this.projectView.Size = new System.Drawing.Size(443, 337);
+            this.projectView.Size = new System.Drawing.Size(448, 337);
             this.projectView.TabIndex = 4;
             this.projectView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.projectView_CellContentClick);
             this.projectView.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.projectView_CellValueChanged);
-            // 
-            // btn_refresh
-            // 
-            this.btn_refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_refresh.Location = new System.Drawing.Point(12, 384);
-            this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(103, 23);
-            this.btn_refresh.TabIndex = 5;
-            this.btn_refresh.Text = "Refresh List";
-            this.btn_refresh.UseVisualStyleBackColor = true;
-            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
             // 
             // metadata
             // 
@@ -128,6 +117,27 @@
             this.compile.Text = "Build Pet";
             this.compile.UseColumnTextForButtonValue = true;
             // 
+            // btn_refresh
+            // 
+            this.btn_refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_refresh.Location = new System.Drawing.Point(12, 384);
+            this.btn_refresh.Name = "btn_refresh";
+            this.btn_refresh.Size = new System.Drawing.Size(103, 23);
+            this.btn_refresh.TabIndex = 5;
+            this.btn_refresh.Text = "Refresh List";
+            this.btn_refresh.UseVisualStyleBackColor = true;
+            this.btn_refresh.Click += new System.EventHandler(this.btn_refresh_Click);
+            // 
+            // btn_import
+            // 
+            this.btn_import.Location = new System.Drawing.Point(121, 12);
+            this.btn_import.Name = "btn_import";
+            this.btn_import.Size = new System.Drawing.Size(103, 23);
+            this.btn_import.TabIndex = 6;
+            this.btn_import.Text = "Import Project";
+            this.btn_import.UseVisualStyleBackColor = true;
+            this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
+            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
@@ -142,13 +152,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(467, 419);
+            this.ClientSize = new System.Drawing.Size(472, 419);
+            this.Controls.Add(this.btn_import);
             this.Controls.Add(this.btn_refresh);
             this.Controls.Add(this.projectView);
             this.Controls.Add(this.btn_create);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_projects);
-            this.MinimumSize = new System.Drawing.Size(361, 274);
+            this.MinimumSize = new System.Drawing.Size(488, 274);
             this.Name = "SDKWindow";
             this.Text = "SDKWindow";
             this.Load += new System.EventHandler(this.SDKWindow_Load);
@@ -170,5 +181,6 @@
         private System.Windows.Forms.DataGridViewButtonColumn metadata;
         private System.Windows.Forms.DataGridViewButtonColumn test;
         private System.Windows.Forms.DataGridViewButtonColumn compile;
+        private System.Windows.Forms.Button btn_import;
     }
 }
