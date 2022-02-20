@@ -28,6 +28,8 @@ namespace Your_Desktop_Pet.Core.Drawing
                 .ToArray();
             _sprite = sprite;
             _spriteDirectory = spriteDirectory;
+
+            _sprite.components |= Lua.LuaObjectComponents.Animator;
         }
 
         ~Animator()
@@ -94,12 +96,18 @@ namespace Your_Desktop_Pet.Core.Drawing
 
         public void Tick()
         {
+            if (_frames.Length == 0)
+            {
+                Helpers.Log.WriteLine("Animator", "Warning: No animation is loaded");
+                return;
+            }
+
             if (_numFrames > 1)
                 _currentFrame = (_currentFrame + 1) % _numFrames;
-            _sprite.SetSprite(_frames[_currentFrame]);
+            _sprite.SetSprite(_frames[_currentFrame], currentAnimation);
         }
 
-        public Forms.SDK.AnimatorDebugInfo GetDebugInfo()
+        public Forms.SDK.AnimatorDebugInfo GetAnimatorDebugInfo()
         {
             return new Forms.SDK.AnimatorDebugInfo(currentAnimation, _numFrames, _currentFrame);
         }

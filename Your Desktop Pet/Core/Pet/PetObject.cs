@@ -3,6 +3,7 @@ using MoonSharp.RemoteDebugger;
 using System;
 using System.Diagnostics;
 using Your_Desktop_Pet.Core.Drawing;
+using Your_Desktop_Pet.Core.Lua;
 
 namespace Your_Desktop_Pet.Core.Pet
 {
@@ -23,7 +24,7 @@ namespace Your_Desktop_Pet.Core.Pet
         }
 
         private RemoteDebuggerService remoteDebugger;
-        private Lua.PetLuaHandler _luaHandler = null;
+        private PetLuaHandler _luaHandler = null;
         private Animator _animator = null;
         private Table _petTable = null;
         private string _baseDirectory = "";
@@ -32,6 +33,8 @@ namespace Your_Desktop_Pet.Core.Pet
         public PetObject(string baseDirectory) : base(baseDirectory + "\\Sprites", new Ini.IniFile(baseDirectory + "\\pet.ini").IniReadValue("PetSettings", "DefaultSprite"))
         {
             _baseDirectory = baseDirectory;
+            _animator = new Animator(this, _baseDirectory + "\\sprites");
+            components ^= LuaObjectComponents.PetObject;
         }
 
         public void Start()
@@ -45,6 +48,7 @@ namespace Your_Desktop_Pet.Core.Pet
 
             name = petFile.IniReadValue("PetInfo", "Name");
             SetSprite(petFile.IniReadValue("PetSettings", "DefaultSprite"));
+            window.ChangeSize(_size.X / window.scaleFactor, _size.Y / window.scaleFactor);
 
             _luaHandler = new Lua.PetLuaHandler();
 
@@ -56,8 +60,6 @@ namespace Your_Desktop_Pet.Core.Pet
 
             _petTable = _luaHandler.lua.Globals.Get("pet").Table;
             _petTable["AABB"] = Lua.LuaHelper.RectToTable(window.Bounds, _luaHandler.lua);
-
-            _animator = new Animator(this, _baseDirectory + "\\sprites");
 
             updateInterval = 1.0f / frameCap;
             animationInterval = frameCap / animationFrameRate;
@@ -123,9 +125,9 @@ namespace Your_Desktop_Pet.Core.Pet
             Process.Start(remoteDebugger.HttpUrlStringLocalHost);
         }
 
-        public Forms.SDK.PetDebugInfo GetDebugInfo()
+        public Forms.SDK.PetDebugInfo GetPetDebugInfo()
         {
-            return new Forms.SDK.PetDebugInfo(_position, _size, _animator.GetDebugInfo());
+            return new Forms.SDK.PetDebugInfo(GetObjectDebugInfo(), _animator.GetAnimatorDebugInfo());
         }
 
         public void Stop()

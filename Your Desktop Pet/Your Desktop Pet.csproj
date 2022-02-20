@@ -76,10 +76,11 @@
     <Compile Include="Core\Helpers\SpriteSheetHelper.cs" />
     <Compile Include="Core\Helpers\Time.cs" />
     <Compile Include="Core\Lua\LuaHelper.cs" />
+    <Compile Include="Core\Lua\LuaObjectComponents.cs" />
     <Compile Include="Core\Lua\PetLuaHandler.cs" />
     <Compile Include="Core\Pet\ActivePetData.cs" />
-    <Compile Include="Core\Pet\LuaObject.cs" />
-    <Compile Include="Core\Pet\LuaObjectManager.cs" />
+    <Compile Include="Core\Lua\LuaObject.cs" />
+    <Compile Include="Core\Lua\LuaObjectManager.cs" />
     <Compile Include="Core\Pet\PetObject.cs" />
     <Compile Include="Forms\ActivePets.cs">
       <SubType>Form</SubType>
@@ -95,6 +96,8 @@
       <DependentUpon>PetDetails.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SDK\AnimatorDebugInfo.cs" />
+    <Compile Include="Forms\SDK\LuaObjectDataSource.cs" />
+    <Compile Include="Forms\SDK\LuaObjectDebugInfo.cs" />
     <Compile Include="Forms\SDK\PetDebugInfo.cs" />
     <Compile Include="Forms\SDK\PetTestingWindow.cs">
       <SubType>Form</SubType>
@@ -150,6 +153,7 @@
     <EmbeddedResource Include="settings.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <None Include="Your_Desktop_Pet.Forms.SDK.LuaObjectDataSource.datasource" />
     <None Include="Your_Desktop_Pet.Forms.SDK.ProjectDataSource.datasource" />
   </ItemGroup>
   <ItemGroup>

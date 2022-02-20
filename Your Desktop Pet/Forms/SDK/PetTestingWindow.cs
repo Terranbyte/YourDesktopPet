@@ -41,21 +41,29 @@ namespace Your_Desktop_Pet.Forms.SDK
             }
 
             _pet = new Core.Pet.PetObject(_petPath);
-            Core.Pet.LuaObjectManager.Current.AddObject(_pet);
+            Core.Lua.LuaObjectManager.Current.AddObject(_pet);
             _pet.Start();
         }
 
         private void UpdateDebugInfo()
         {
-            PetDebugInfo info = _pet.GetDebugInfo();
+            PetDebugInfo info = _pet.GetPetDebugInfo();
 
-            pos_x.Text = info.position.X.ToString();
-            pos_y.Text = info.position.Y.ToString();
-            size_x.Text = info.size.X.ToString();
-            size_y.Text = info.size.Y.ToString();
+            pos_x.Text = info.objectInfo.position.X.ToString();
+            pos_y.Text = info.objectInfo.position.Y.ToString();
+            size_x.Text = info.objectInfo.size.X.ToString();
+            size_y.Text = info.objectInfo.size.Y.ToString();
             curr_anim.Text = info.animatorInfo.currentAnimation;
             num_frames.Text = info.animatorInfo.numFrames.ToString();
             anim_index.Text = info.animatorInfo.currentFrame.ToString();
+
+            //UpdateObjectList();
+        }
+
+        private void UpdateObjectList()
+        {
+            luaObjectDataSourceBindingSource.Clear();
+            luaObjectDataSourceBindingSource.Add(new LuaObjectDataSource() { objectInfo = Core.Lua.LuaObjectManager.Current.GetObjectsOfType<Core.Lua.LuaObject>()[0].GetObjectDebugInfo() });
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)

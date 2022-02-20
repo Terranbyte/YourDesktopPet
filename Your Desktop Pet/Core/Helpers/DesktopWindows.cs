@@ -159,23 +159,23 @@ namespace Your_Desktop_Pet.Core.Helpers
 
             if (ok)
             {
-                string a = "Include Overlap";
-                string b = "Include Maximized";
+                //string a = "Include Overlap";
+                //string b = "Include Maximized";
 
-                if (removeOverlap)
-                    a = "Remove Overlap";
-                if (removeMaximize)
-                    b = "Remove Maximized";
+                //if (removeOverlap)
+                //    a = "Remove Overlap";
+                //if (removeMaximize)
+                //    b = "Remove Maximized";
 
-                Log.WriteLine("PetAPI", $"Visible windows ({a}, {b}):");
-                Log.IndentationLevel += 1;
+                //Log.WriteLine("PetAPI", $"Visible windows ({a}, {b}):");
+                //Log.IndentationLevel += 1;
 
-                foreach (KeyValuePair<string, Rectangle> kvPair in bounds)
-                {
-                    Log.WriteLine("PetAPI", $"{kvPair.Key}: {kvPair.Value}");
-                }
+                //foreach (KeyValuePair<string, Rectangle> kvPair in bounds)
+                //{
+                //    Log.WriteLine("PetAPI", $"{kvPair.Key}: {kvPair.Value}");
+                //}
 
-                Log.IndentationLevel -= 1;
+                //Log.IndentationLevel -= 1;
 
                 return bounds.ToArray();
             }

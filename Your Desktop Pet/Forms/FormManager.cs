@@ -11,14 +11,17 @@ namespace Your_Desktop_Pet.Forms
 
     public class FormManager : ApplicationContext
     {
-        private List<Form> forms = new List<Form>();
+        public static FormManager Current => _current.Value;
+
+        private List<Form> _forms = new List<Form>();
+        private static Lazy<FormManager> _current = new Lazy<FormManager>();
 
         private void onFormClosed(object sender, EventArgs e)
         {
-            forms.Remove((Form)sender);
+            _forms.Remove((Form)sender);
             Core.Helpers.Log.WriteLine("Form Manager", $"Window closed: {((Form)sender).Name}");
 
-            if (!forms.Any())
+            if (!_forms.Any())
             {
                 ExitThread();
             }
@@ -27,7 +30,7 @@ namespace Your_Desktop_Pet.Forms
         public void RegisterForm(Form frm)
         {
             frm.FormClosed += onFormClosed;
-            forms.Add(frm);
+            _forms.Add(frm);
         }
 
         public T CreateForm<T>() where T : Form, new()
@@ -36,8 +39,5 @@ namespace Your_Desktop_Pet.Forms
             RegisterForm(ret);
             return ret;
         }
-
-        private static Lazy<FormManager> _current = new Lazy<FormManager>();
-        public static FormManager Current => _current.Value;
     }
 }

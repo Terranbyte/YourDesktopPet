@@ -4,32 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Your_Desktop_Pet.Core.Pet
+namespace Your_Desktop_Pet.Core.Lua
 {
     public class LuaObjectManager
     {
         public static LuaObjectManager Current => _current.Value;
 
-        private List<LuaObject> objects = new List<LuaObject>();
+        private List<LuaObject> _objects = new List<LuaObject>();
         private static Lazy<LuaObjectManager> _current = new Lazy<LuaObjectManager>();
 
         private void OnObjectDestroy(LuaObject o)
         {
-            objects.Remove(o);
+            _objects.Remove(o);
             Helpers.Log.WriteLine("LuaObjectManager", $"Destroying object \"{o.name}\" ({o.GetGUID()})");
         }
 
         public string AddObject<T>(T obj) where T : LuaObject
         {
             obj.onObjectDestroy += () => OnObjectDestroy(obj);
-            objects.Add(obj);
+            _objects.Add(obj);
             return obj.GetGUID();
         }
 
         public void DeleteObject<T>(T obj) where T : LuaObject
         {
             obj.Dispose();
-            objects.Remove(obj);
+            _objects.Remove(obj);
         }
 
         public void DeleteObject(string guid)
@@ -40,22 +40,22 @@ namespace Your_Desktop_Pet.Core.Pet
                 return;
 
             o.Dispose();
-            objects.Remove(GetObjectFromGUID<LuaObject>(guid));
+            _objects.Remove(GetObjectFromGUID<LuaObject>(guid));
         }
 
         public T GetObjectFromGUID<T>(string guid) where T : LuaObject
         {
-            return (T)objects.Find(x => x.GetGUID() == guid);
+            return (T)_objects.Find(x => x.GetGUID() == guid);
         }
 
         public List<T> GetObjectsOfType<T>() where T : LuaObject
         {
-            return objects.Where(x => x is T).Cast<T>().ToList();
+            return _objects.Where(x => x is T).Cast<T>().ToList();
         }
 
         public int GetObjectCount()
         {
-            return objects.Count;
+            return _objects.Count;
         }
     }
 }

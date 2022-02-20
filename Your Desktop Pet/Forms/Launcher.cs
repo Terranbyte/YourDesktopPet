@@ -170,7 +170,7 @@ namespace Your_Desktop_Pet.Forms
             }
 
             _pet = new Core.Pet.PetObject(petPath);
-            Core.Pet.LuaObjectManager.Current.AddObject(_pet);
+            Core.Lua.LuaObjectManager.Current.AddObject(_pet);
             _pet.Start();
         }
 

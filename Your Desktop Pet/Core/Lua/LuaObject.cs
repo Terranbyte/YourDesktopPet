@@ -4,8 +4,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Your_Desktop_Pet.Forms.SDK;
 
-namespace Your_Desktop_Pet.Core.Pet
+namespace Your_Desktop_Pet.Core.Lua
 {
     public enum AnchorPoint
     {
@@ -25,6 +26,7 @@ namespace Your_Desktop_Pet.Core.Pet
         public Action onObjectDestroy;
         public string name;
         public AnchorPoint anchor = AnchorPoint.TopLeft;
+        public LuaObjectComponents components = LuaObjectComponents.LuaObject;
 
         protected Vector2 _position = Vector2.Zero;
         protected Vector2 _size = Vector2.One;
@@ -69,6 +71,11 @@ namespace Your_Desktop_Pet.Core.Pet
         public virtual void SetSize(int x, int y)
         {
             _size = new Vector2(x, y);
+        }
+
+        public LuaObjectDebugInfo GetObjectDebugInfo()
+        {
+            return new LuaObjectDebugInfo(name, _position, _size);
         }
 
         public string GetGUID()

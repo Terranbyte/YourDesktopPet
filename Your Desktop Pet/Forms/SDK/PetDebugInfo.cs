@@ -10,14 +10,12 @@ namespace Your_Desktop_Pet.Forms.SDK
 {
     public struct PetDebugInfo
     {
-        public Vector2 position;
-        public Vector2 size;
+        public LuaObjectDebugInfo objectInfo;
         public AnimatorDebugInfo animatorInfo;
 
-        public PetDebugInfo(Vector2 position, Vector2 size, AnimatorDebugInfo animatorInfo)
+        public PetDebugInfo(LuaObjectDebugInfo objectInfo, AnimatorDebugInfo animatorInfo)
         {
-            this.position = position;
-            this.size = size;
+            this.objectInfo = objectInfo;
             this.animatorInfo = animatorInfo;
         }
     }

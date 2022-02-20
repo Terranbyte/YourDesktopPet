@@ -13,7 +13,7 @@ namespace Your_Desktop_Pet.Forms
         public InterpolationMode InterpolationMode = InterpolationMode.NearestNeighbor;
         public float scaleFactor;
 
-        protected override bool ShowWithoutActivation { get { return true; } }
+        protected override bool ShowWithoutActivation { get { return false; } }
         private const int WS_EX_TOPMOST = 0x00000008;
 
         public SpriteWindow()
@@ -55,10 +55,10 @@ namespace Your_Desktop_Pet.Forms
             base.OnPaintBackground(e);
         }
 
-        public void ChangeSize(float width, int height)
+        public void ChangeSize(float width, float height)
         {
             Size = new Size((int)(width * scaleFactor), (int)(height * scaleFactor));
-            BackgroundImage = new Bitmap(Size.Width, Size.Height);
+            //BackgroundImage = new Bitmap(Size.Width, Size.Height);
         }
 
         private void InitializeComponent()

@@ -45,6 +45,21 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.btn_respawn = new System.Windows.Forms.Button();
+            this.objectView = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cb_luaObject = new System.Windows.Forms.CheckBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cb_sprite = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.luaObjectDataSourceBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.size = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.spriteName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.visible = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.objectView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.luaObjectDataSourceBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // updateTimer
@@ -176,17 +191,147 @@
             // 
             this.btn_respawn.Location = new System.Drawing.Point(396, 61);
             this.btn_respawn.Name = "btn_respawn";
-            this.btn_respawn.Size = new System.Drawing.Size(115, 23);
+            this.btn_respawn.Size = new System.Drawing.Size(121, 23);
             this.btn_respawn.TabIndex = 20;
             this.btn_respawn.Text = "Respawn Pet";
             this.btn_respawn.UseVisualStyleBackColor = true;
             this.btn_respawn.Click += new System.EventHandler(this.btn_respawn_Click);
             // 
+            // objectView
+            // 
+            this.objectView.AllowUserToAddRows = false;
+            this.objectView.AllowUserToDeleteRows = false;
+            this.objectView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.objectView.AutoGenerateColumns = false;
+            this.objectView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.objectView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.name,
+            this.pos,
+            this.size,
+            this.spriteName,
+            this.visible});
+            this.objectView.DataSource = this.luaObjectDataSourceBindingSource;
+            this.objectView.Location = new System.Drawing.Point(15, 103);
+            this.objectView.Name = "objectView";
+            this.objectView.ReadOnly = true;
+            this.objectView.Size = new System.Drawing.Size(505, 229);
+            this.objectView.TabIndex = 21;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 87);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Active objects";
+            // 
+            // cb_luaObject
+            // 
+            this.cb_luaObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cb_luaObject.AutoCheck = false;
+            this.cb_luaObject.AutoSize = true;
+            this.cb_luaObject.Location = new System.Drawing.Point(12, 351);
+            this.cb_luaObject.Name = "cb_luaObject";
+            this.cb_luaObject.Size = new System.Drawing.Size(75, 17);
+            this.cb_luaObject.TabIndex = 23;
+            this.cb_luaObject.Text = "LuaObject";
+            this.cb_luaObject.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(9, 335);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(66, 13);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "Components";
+            // 
+            // cb_sprite
+            // 
+            this.cb_sprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cb_sprite.AutoCheck = false;
+            this.cb_sprite.AutoSize = true;
+            this.cb_sprite.Location = new System.Drawing.Point(93, 351);
+            this.cb_sprite.Name = "cb_sprite";
+            this.cb_sprite.Size = new System.Drawing.Size(53, 17);
+            this.cb_sprite.TabIndex = 25;
+            this.cb_sprite.Text = "Sprite";
+            this.cb_sprite.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox1.AutoCheck = false;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(152, 351);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(67, 17);
+            this.checkBox1.TabIndex = 26;
+            this.checkBox1.Text = "Animator";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBox2.AutoCheck = false;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(225, 351);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(73, 17);
+            this.checkBox2.TabIndex = 27;
+            this.checkBox2.Text = "PetObject";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // luaObjectDataSourceBindingSource
+            // 
+            this.luaObjectDataSourceBindingSource.DataSource = typeof(Your_Desktop_Pet.Forms.SDK.LuaObjectDataSource);
+            // 
+            // name
+            // 
+            this.name.HeaderText = "Name";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            // 
+            // pos
+            // 
+            this.pos.HeaderText = "Position";
+            this.pos.Name = "pos";
+            this.pos.ReadOnly = true;
+            // 
+            // size
+            // 
+            this.size.HeaderText = "Size";
+            this.size.Name = "size";
+            this.size.ReadOnly = true;
+            // 
+            // spriteName
+            // 
+            this.spriteName.HeaderText = "Sprite Name";
+            this.spriteName.Name = "spriteName";
+            this.spriteName.ReadOnly = true;
+            // 
+            // visible
+            // 
+            this.visible.HeaderText = "Is Visible";
+            this.visible.Name = "visible";
+            this.visible.ReadOnly = true;
+            // 
             // PetTestingWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 97);
+            this.ClientSize = new System.Drawing.Size(529, 380);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.cb_sprite);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.cb_luaObject);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.objectView);
             this.Controls.Add(this.btn_respawn);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -206,6 +351,8 @@
             this.Text = "PetTestingWindow";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PetTestingWindow_FormClosing);
             this.Load += new System.EventHandler(this.PetTestWindow_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.objectView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.luaObjectDataSourceBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -229,5 +376,18 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btn_respawn;
+        private System.Windows.Forms.DataGridView objectView;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox cb_luaObject;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox cb_sprite;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.BindingSource luaObjectDataSourceBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn size;
+        private System.Windows.Forms.DataGridViewTextBoxColumn spriteName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn visible;
     }
 }

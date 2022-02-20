@@ -9,7 +9,7 @@ Version="1.0"
 UpdateCallInterval=60
 AnimationFrameRate=8
 SpriteScaleFactor=1
-DefaultSprite="default_1.png"
+DefaultSprite="default"
 Anchor=Center
 
 [PetCustomData]
